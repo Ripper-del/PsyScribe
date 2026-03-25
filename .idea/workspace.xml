@@ -6,10 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="commit (done the whole idea)">
       <change afterPath="$PROJECT_DIR$/psyscribe-backend/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/psyscribe-backend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/psyscribe-backend/Docker" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-backend/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/AuthPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/AuthPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/Clients.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/Clients.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/Dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/SessionWorkspace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/SessionWorkspace.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/Settings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/Settings.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +93,7 @@
       <updated>1774380275390</updated>
       <workItem from="1774380276355" duration="14236000" />
       <workItem from="1774395017371" duration="1849000" />
-      <workItem from="1774437305500" duration="16326000" />
+      <workItem from="1774437305500" duration="19392000" />
     </task>
     <task id="LOCAL-00001" summary="first commit (nothing done yet)">
       <option name="closed" value="true" />
@@ -132,7 +135,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774468528024</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="commit (done the whole idea)">
+      <option name="closed" value="true" />
+      <created>1774469031500</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774469031500</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

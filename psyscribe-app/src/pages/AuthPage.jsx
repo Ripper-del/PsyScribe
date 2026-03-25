@@ -34,7 +34,7 @@ export default function AuthPage() {
             provider: 'google',
             options: {
                 // Повертаємо юзера сюди після успішного логіну (зміни порт, якщо у тебе інший!)
-                redirectTo: 'http://localhost:5173/dashboard'
+                redirectTo: 'import.meta.env.VITE_API_URL/dashboard'
             }
         });
 

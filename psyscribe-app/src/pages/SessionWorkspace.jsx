@@ -151,7 +151,7 @@ export default function SessionWorkspace() {
         try {
             const clientName = clients.find(c => c.id === selectedClientId)?.name || "Клієнт";
 
-            const response = await fetch('http://localhost:3000/api/generate-soap', {
+            const response = await fetch('import.meta.env.VITE_API_URL/api/generate-soap', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -222,7 +222,7 @@ export default function SessionWorkspace() {
 
             toast.loading("Готуємо сторінку оплати...", { id: 'stripe-loading' });
 
-            const response = await fetch('http://localhost:3000/api/create-checkout-session', {
+            const response = await fetch('import.meta.env.VITE_API_URLapi/create-checkout-session', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

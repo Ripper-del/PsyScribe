@@ -87,8 +87,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
             customer_email: userEmail,
 
             // Куди кидаємо після оплати
-            success_url: 'http://localhost:5173/dashboard?success=true',
-            cancel_url: 'http://localhost:5173/dashboard?canceled=true',
+            success_url: 'https://psyscribe.vercel.app/dashboard?success=true',
+            cancel_url: 'https://psyscribe.vercel.app/dashboard?canceled=true',
 
             // Зашиваємо ID, щоб вебхук знав, кому давати PRO
             metadata: {

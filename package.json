@@ -1,8 +1,8 @@
 {
-  "name": "PsyScribe-Proj",
+  "name": "psyscribe-proj",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.jsx",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

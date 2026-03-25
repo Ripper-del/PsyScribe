@@ -93,7 +93,7 @@ export default function Settings() {
 
             toast.loading("Готуємо сторінку оплати...", { id: 'stripe-loading' });
 
-            const response = await fetch('${window.location.origin}/api/create-checkout-session', {
+            const response = await fetch(`${window.location.origin}/api/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

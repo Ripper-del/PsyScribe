@@ -34,7 +34,7 @@ export default function AuthPage() {
             provider: 'google',
             options: {
                 // Повертаємо юзера сюди після успішного логіну (зміни порт, якщо у тебе інший!)
-                redirectTo: '${window.location.origin}/dashboard'
+                redirectTo: `${window.location.origin}/dashboard`
             }
         });
 

@@ -8,7 +8,6 @@
       <change afterPath="$PROJECT_DIR$/psyscribe-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/psyscribe-app/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/AuthPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/AuthPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/Clients.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/Clients.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/Dashboard.jsx" afterDir="false" />
@@ -94,7 +93,7 @@
       <updated>1774380275390</updated>
       <workItem from="1774380276355" duration="14236000" />
       <workItem from="1774395017371" duration="1849000" />
-      <workItem from="1774437305500" duration="20553000" />
+      <workItem from="1774437305500" duration="21094000" />
     </task>
     <task id="LOCAL-00001" summary="first commit (nothing done yet)">
       <option name="closed" value="true" />
@@ -168,7 +167,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774472933423</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="commit (done the whole idea)">
+      <option name="closed" value="true" />
+      <created>1774473462042</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1774473462042</updated>
+    </task>
+    <task id="LOCAL-00011" summary="commit (done the whole idea)">
+      <option name="closed" value="true" />
+      <created>1774473702846</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1774473702846</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

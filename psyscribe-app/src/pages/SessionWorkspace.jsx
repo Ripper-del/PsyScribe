@@ -188,6 +188,22 @@ export default function SessionWorkspace() {
         }
     };
 
+    const handleCreateClient = async (clientData) => {
+        // Отримуємо поточного юзера з сесії Supabase
+        const { data: { user } } = await supabase.auth.getUser();
+
+        const { data, error } = await supabase
+            .from('clients')
+            .insert([
+                {
+                    ...clientData,
+                    user_id: user.id // Обов'язково додаємо цей рядок!
+                }
+            ]);
+
+        if (error) toast.error(error.message);
+    };
+
     const handleCopyTranscript = () => {
         const fullText = (transcript + ' ' + interimTranscript + ' ' + manualTranscript).trim();
         navigator.clipboard.writeText(fullText);

@@ -103,7 +103,7 @@ export default function Clients() {
 
             toast.loading("Готуємо сторінку оплати...", { id: 'stripe-loading' });
 
-            const response = await fetch('https://psyscribe-pearl.vercel.app/api/create-checkout-session', {
+            const response = await fetch('${window.location.origin}/api/create-checkout-session', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

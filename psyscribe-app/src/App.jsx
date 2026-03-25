@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast'; // ДУЖЕ ВАЖЛИВИЙ ІМПОРТ
+import { Toaster } from 'react-hot-toast';
 
 import LandingPage from './pages/LandingPage';
 import AuthPage from './pages/AuthPage';

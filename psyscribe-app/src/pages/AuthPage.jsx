@@ -34,7 +34,7 @@ export default function AuthPage() {
             provider: 'google',
             options: {
                 // Повертаємо юзера сюди після успішного логіну (зміни порт, якщо у тебе інший!)
-                redirectTo: 'https://psyscribe-pearl.vercel.app/dashboard'
+                redirectTo: '${window.location.origin}/dashboard'
             }
         });
 

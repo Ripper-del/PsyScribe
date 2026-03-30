@@ -105,7 +105,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
 
 // існуючий роут для генерації
-app.post(`{window.location.origin}/api/generate-soap`, async (req, res) => {
+app.post('/api/generate-soap', async (req, res) => {
     try {
         console.log("Отримані дані для AI:", req.body.clientName);
 

@@ -151,7 +151,7 @@ export default function SessionWorkspace() {
         try {
             const clientName = clients.find(c => c.id === selectedClientId)?.name || "Клієнт";
 
-            const response = await fetch(`${window.location.origin}/api/generate-soap`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/generate-soap`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -233,12 +233,11 @@ export default function SessionWorkspace() {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return toast.error("Будь ласка, увійдіть в систему!");
 
-            // ВСТАВ СЮДИ СВІЙ PRICE ID ЗІ STRIPE
             const PRICE_ID = 'price_1TEtb3C7woZkJdzPKXTKL0P4';
 
             toast.loading("Готуємо сторінку оплати...", { id: 'stripe-loading' });
 
-            const response = await fetch(`${window.location.origin}/api/create-checkout-session`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

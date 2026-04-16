@@ -79,7 +79,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
             payment_method_types: ['card'],
             line_items: [
                 {
-                    price: priceId, // Твій price_1Pxyz... з фронтенду
+                    price: priceId, // price_1Pxyz... з фронтенду
                     quantity: 1,
                 },
             ],

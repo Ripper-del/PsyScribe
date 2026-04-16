@@ -33,17 +33,21 @@ export default function SessionWorkspace() {
 
     useEffect(() => {
         const fetchInitialData = async () => {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) {
+            // 1. Правильно достаем юзера и сразу проверяем на ошибки
+            const { data: { user }, error: authError } = await supabase.auth.getUser();
+            if (authError || !user) {
                 navigate('/login');
                 return;
             }
 
-            // ВАЖЛИВО: Сортуємо за created_at, щоб перші 3 були "старими"
-            const { data: clientsData } = await supabase
+            // 2. ФИКС RLS: Явно фильтруем клиентов по ID текущего терапевта
+            const { data: clientsData, error: clientsError } = await supabase
                 .from('clients')
                 .select('id, name, created_at')
+                .eq('user_id', user.id) // <--- ОБЯЗАТЕЛЬНАЯ СТРОКА
                 .order('created_at', { ascending: true });
+
+            if (clientsError) console.error("Ошибка загрузки:", clientsError);
             if (clientsData) setClients(clientsData);
 
             const { data: profileData } = await supabase
@@ -165,20 +169,28 @@ export default function SessionWorkspace() {
 
             if (!response.ok) throw new Error("Помилка при з'єднанні з AI-сервером");
 
+            // ... (ожидание ответа от ШИ)
             const data = await response.json();
             setSoapData(data);
 
-            const { data: userData } = await supabase.auth.getUser();
+            // ФИКС RLS: Безопасно достаем user и проверяем его наличие
+            const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+            if (authError || !user) {
+                throw new Error("Не удалось идентифицировать пользователя для сохранения сессии");
+            }
+
+            // Теперь insert 100% соответствует политике WITH CHECK (auth.uid() = user_id)
             const { error: dbError } = await supabase.from('sessions').insert([{
                 client_id: selectedClientId,
-                user_id: userData.user.id,
+                user_id: user.id, // Используем чистый user.id
                 transcript: finalTranscript,
                 soap_note: data,
                 therapy_type: therapyType
             }]);
 
             if (dbError) throw dbError;
-            toast.success("Сесію проаналізовано та збережено!");
+            toast.success("Сессию проанализировано и сохранено!");
 
         } catch (err) {
             console.error(err);

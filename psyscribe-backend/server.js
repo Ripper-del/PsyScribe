@@ -75,6 +75,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
     try {
         const { userId, userEmail, priceId } = req.body;
 
+        const CLIENT_URL = process.env.CLIENT_URL || 'https://psyscribe-pearl.vercel.app';
+
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             line_items: [
@@ -87,8 +89,8 @@ app.post('/api/create-checkout-session', async (req, res) => {
             customer_email: userEmail,
 
             // Куди кидаємо після оплати
-            success_url: 'https://psyscribe.vercel.app/dashboard?success=true',
-            cancel_url: 'https://psyscribe.vercel.app/dashboard?canceled=true',
+            success_url: `${CLIENT_URL}/dashboard?success=true`,
+            cancel_url: `${CLIENT_URL}/dashboard?canceled=true`,
 
             // Зашиваємо ID, щоб вебхук знав, кому давати PRO
             metadata: {

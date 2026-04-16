@@ -8,7 +8,7 @@
       <change afterPath="$PROJECT_DIR$/psyscribe-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/Settings.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/Settings.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/psyscribe-backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-backend/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +95,7 @@
       <workItem from="1775228147104" duration="14000" />
       <workItem from="1775585873723" duration="25000" />
       <workItem from="1776284336510" duration="2773000" />
-      <workItem from="1776346433804" duration="1841000" />
+      <workItem from="1776346433804" duration="2387000" />
     </task>
     <task id="LOCAL-00001" summary="first commit (nothing done yet)">
       <option name="closed" value="true" />
@@ -249,7 +249,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776347320229</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="trying to fix the payment">
+      <option name="closed" value="true" />
+      <created>1776348331323</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1776348331323</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

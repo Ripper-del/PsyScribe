@@ -237,7 +237,7 @@ export default function SessionWorkspace() {
 
             toast.loading("Готуємо сторінку оплати...", { id: 'stripe-loading' });
 
-            const response = await fetch('https://psyscribe-production.up.railway.app/api/create-checkout-session', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/create-checkout-session`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

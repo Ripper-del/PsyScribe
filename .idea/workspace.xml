@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="fixed server.js slightly, might help">
+    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="changed model to gemini 3.1 flash lite">
       <change afterPath="$PROJECT_DIR$/psyscribe-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/psyscribe-backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-backend/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +93,7 @@
       <workItem from="1774883270744" duration="3350000" />
       <workItem from="1775228147104" duration="14000" />
       <workItem from="1775585873723" duration="25000" />
-      <workItem from="1776284336510" duration="23000" />
+      <workItem from="1776284336510" duration="2773000" />
     </task>
     <task id="LOCAL-00001" summary="first commit (nothing done yet)">
       <option name="closed" value="true" />
@@ -224,7 +223,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774886097200</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="changed model to gemini 3.1 flash lite">
+      <option name="closed" value="true" />
+      <created>1776285197625</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1776285197625</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -234,6 +241,7 @@
     <MESSAGE value="first commit (nothing done yet)" />
     <MESSAGE value="commit (done the whole idea)" />
     <MESSAGE value="fixed server.js slightly, might help" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed server.js slightly, might help" />
+    <MESSAGE value="changed model to gemini 3.1 flash lite" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed model to gemini 3.1 flash lite" />
   </component>
 </project>

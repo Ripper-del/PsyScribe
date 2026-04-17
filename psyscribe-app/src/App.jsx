@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ClientProfile from './pages/ClientProfile';
 import Clients from './pages/Clients';
 import Settings from './pages/Settings';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 function App() {
     return (
@@ -42,7 +43,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<AuthPage />} />
-
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/session" element={<ProtectedRoute><SessionWorkspace /></ProtectedRoute>} />
                 <Route path="/clients/:id" element={<ProtectedRoute><ClientProfile /></ProtectedRoute>} />

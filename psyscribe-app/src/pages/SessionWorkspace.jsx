@@ -95,7 +95,7 @@ export default function SessionWorkspace() {
 
             // Визначаємо, чи це телефон
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
+            console.log('isMobile ', isMobile);
             recognition.continuous = true;
             // 🔥 РЯТІВНИЙ РЯДОК: Вимикаємо interimResults на телефонах, щоб уникнути багу Android Chrome!
             if(isMobile){

@@ -1840,77 +1840,6 @@ header {
   }
 }
 
-@media (max-width: 768px) {
-  /* =========================================
-     1. РЯТУЄМО ХЕДЕР ЛЕНДІНГУ
-     ========================================= */
-  .landing-header {
-    padding: 15px 20px !important;
-  }
-
-  /* Ховаємо центральну навігацію (Тарифи тощо) */
-  .header-nav {
-    display: none !important;
-  }
-
-  /* Зменшуємо лого і кнопку, щоб влізли поруч */
-  .logo {
-    font-size: 20px !important;
-  }
-  .landing-header .btn {
-    padding: 8px 16px !important;
-    font-size: 14px !important;
-  }
-
-  /* =========================================
-     2. РЯТУЄМО СІТКИ (Усе в одну колонку)
-     ========================================= */
-  /* Головний екран, Проблеми та Кроки тепер стоятимуть один під одним */
-  .hero-section,
-  .problem-grid,
-  .solution-steps {
-    grid-template-columns: 1fr !important;
-    gap: 40px !important;
-    padding: 60px 20px !important;
-  }
-
-  .hero-visual {
-    display: none !important; /* Ховаємо абстрактні кола на телефоні, щоб не займали пів екрана */
-  }
-
-  /* =========================================
-     3. РЯТУЄМО ТЕКСТ
-     ========================================= */
-  .hero-title {
-    font-size: 36px !important;
-    line-height: 1.2 !important;
-  }
-  .hero-subtitle {
-    font-size: 16px !important;
-  }
-  .section-title {
-    font-size: 30px !important;
-    margin-bottom: 30px !important;
-  }
-
-  /* =========================================
-     4. РЯТУЄМО ТАРИФИ (Щоб не вилазили)
-     ========================================= */
-  .pricing-section {
-    display: flex !important;
-    flex-direction: column !important; /* Картки стають одна під одною */
-    gap: 30px !important;
-    padding: 0 20px !important;
-  }
-
-  .pricing-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 40px 20px !important; /* Робимо внутрішні відступи трохи меншими на телефоні */
-    box-sizing: border-box !important;
-    margin: 0 !important;
-  }
-}
 /* =========================================
    ФІНАЛЬНА МОБІЛЬНА АДАПТАЦІЯ ЛЕНДІНГУ
    ========================================= */
@@ -1932,6 +1861,9 @@ header {
     padding: 8px 16px !important;
     font-size: 14px !important;
   }
+  .logo {
+    font-size: 20px !important;
+  }
 
   /* Складаємо сітки в одну колонку */
   .hero-section,
@@ -1949,6 +1881,10 @@ header {
   /* Типографіка */
   .hero-title {
     font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+  .hero-subtitle {
+    font-size: 16px !important;
   }
   .section-title {
     font-size: 28px !important;
@@ -1957,6 +1893,7 @@ header {
 
   /* Тарифи */
   .pricing-section {
+    display: flex !important;
     flex-direction: column !important;
     padding: 0 20px 40px 20px !important;
     gap: 30px !important;
@@ -1965,7 +1902,8 @@ header {
   .pricing-card {
     width: 100% !important;
     max-width: 100% !important;
-    padding: 30px 20px !important; /* Зменшуємо внутрішні відступи */
+    padding: 30px 20px !important;
     box-sizing: border-box !important;
+    margin: 0 !important;
   }
 }

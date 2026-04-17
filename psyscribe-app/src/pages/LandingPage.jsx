@@ -21,7 +21,6 @@ export default function LandingPage() {
                     <Link to="/login" style={{ textDecoration: 'none', color: '#e8e6e0', fontSize: '15px', fontWeight: '500' }}>Увійти</Link>
                     <Link to="/login" className="new-session-btn" style={{ padding: '10px 24px', borderRadius: '8px', fontSize: '15px' }}>Спробувати безкоштовно</Link>
                 </nav>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
             </header>
 
             {/* HERO СЕКЦІЯ */}

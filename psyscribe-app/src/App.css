@@ -1913,4 +1913,26 @@ header {
     box-sizing: border-box !important;
     margin: 0 !important;
   }
+  /* Зменшуємо загальні бокові відступи всієї сторінки */
+  .container {
+    padding: 40px 15px !important;
+  }
+
+  /* Дозволяємо кнопкам бути гнучкими і переносити довгий текст */
+  .btn, .new-session-btn {
+    white-space: normal !important;
+    text-align: center !important;
+    padding: 12px 15px !important;
+    font-size: 14px !important;
+    height: auto !important;
+    width: 100% !important;
+  }
+
+  /* Робимо картки "тоншими" зсередини, щоб контенту було чим дихати */
+  .pricing-card {
+    padding: 30px 20px !important;
+    width: 100% !important;
+    min-width: 0 !important; /* Вбиваємо будь-які жорсткі розміри */
+    box-sizing: border-box !important;
+  }
 }

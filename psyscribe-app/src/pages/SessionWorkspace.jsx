@@ -83,7 +83,13 @@ export default function SessionWorkspace() {
     }, [isRecording]);
 
     useEffect(() => {
-        if (!recognitionRef.current && ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+        // 1. Перевірка: чи взагалі браузер вміє слухати?
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            console.warn("Браузер не підтримує SpeechRecognition");
+            return; // Виходимо, якщо API немає
+        }
+
+        if (!recognitionRef.current) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
             recognition.continuous = true;
@@ -99,6 +105,18 @@ export default function SessionWorkspace() {
                 }
                 if (finalStr) setTranscript(prev => prev + finalStr);
                 setInterimTranscript(interimStr);
+            };
+
+            // ДОДАНО: Відловлюємо помилки, щоб знати, що йде не так
+            recognition.onerror = (event) => {
+                console.error("Помилка мікрофона:", event.error);
+                if (event.error === 'not-allowed') {
+                    toast.error("Доступ до мікрофона заблоковано браузером!");
+                    setIsRecording(false);
+                    isRecordingRef.current = false;
+                } else if (event.error === 'network') {
+                    toast.error("Помилка мережі при розпізнаванні голосу.");
+                }
             };
 
             recognitionRef.current = recognition;

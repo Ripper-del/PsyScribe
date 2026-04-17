@@ -181,7 +181,7 @@ export default function LandingPage() {
                     </div>
                     <div style={{ display: 'flex', gap: '30px' }}>
                         <a href="#" style={{ color: '#8a8d91', textDecoration: 'none', fontSize: '14px', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = '#e8e6e0'} onMouseOut={e => e.target.style.color = '#8a8d91'}>Політика конфіденційності</a>
-                        <a href="mailto:support@psyscribe.app" style={{ color: '#8a8d91', textDecoration: 'none', fontSize: '14px', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = '#e8e6e0'} onMouseOut={e => e.target.style.color = '#8a8d91'}>Підтримка</a>
+                        <a href="mailto:vladyslav.marinov@gmail.com" style={{ color: '#8a8d91', textDecoration: 'none', fontSize: '14px', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = '#e8e6e0'} onMouseOut={e => e.target.style.color = '#8a8d91'}>Підтримка</a>
                     </div>
                 </div>
                 <div style={{ textAlign: 'center', color: '#555', marginTop: '40px', fontSize: '13px' }}>

@@ -97,7 +97,7 @@ export default function SessionWorkspace() {
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
             recognition.continuous = true;
-            recognition.interimResults = !isMobile; // Пробуємо вимкнути через API
+            recognition.interimResults = False; // Пробуємо вимкнути через API
             recognition.lang = 'uk-UA';
 
             recognition.onresult = (event) => {

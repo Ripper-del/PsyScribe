@@ -1911,3 +1911,61 @@ header {
     margin: 0 !important;
   }
 }
+/* =========================================
+   ФІНАЛЬНА МОБІЛЬНА АДАПТАЦІЯ ЛЕНДІНГУ
+   ========================================= */
+@media screen and (max-width: 768px) {
+  /* Вбиваємо горизонтальний скрол */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+
+  /* Хедер */
+  .landing-header {
+    padding: 15px 20px !important;
+  }
+  .header-nav {
+    display: none !important; /* Ховаємо текстові посилання */
+  }
+  .landing-header .btn {
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+  }
+
+  /* Складаємо сітки в одну колонку */
+  .hero-section,
+  .problem-grid,
+  .solution-steps {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+    padding: 40px 20px !important;
+  }
+
+  .hero-visual {
+    display: none !important;
+  }
+
+  /* Типографіка */
+  .hero-title {
+    font-size: 32px !important;
+  }
+  .section-title {
+    font-size: 28px !important;
+    margin-bottom: 24px !important;
+  }
+
+  /* Тарифи */
+  .pricing-section {
+    flex-direction: column !important;
+    padding: 0 20px 40px 20px !important;
+    gap: 30px !important;
+  }
+
+  .pricing-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 30px 20px !important; /* Зменшуємо внутрішні відступи */
+    box-sizing: border-box !important;
+  }
+}

@@ -15,11 +15,13 @@ export default function LandingPage() {
                     <div style={{ width: '12px', height: '12px', background: '#c8a96e', borderRadius: '50%', boxShadow: '0 0 10px rgba(200, 169, 110, 0.5)' }}></div>
                     <span style={{ fontFamily: 'Playfair Display', fontSize: '24px', fontWeight: 'bold', color: '#e8e6e0', letterSpacing: '0.5px' }}>PsyScribe</span>
                 </Link>
+
                 <nav style={{ display: 'flex', gap: '30px', alignItems: 'center' }}>
                     <a href="#pricing" style={{ textDecoration: 'none', color: '#8a8d91', fontSize: '15px', transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = '#e8e6e0'} onMouseOut={e => e.target.style.color = '#8a8d91'}>Тарифи</a>
                     <Link to="/login" style={{ textDecoration: 'none', color: '#e8e6e0', fontSize: '15px', fontWeight: '500' }}>Увійти</Link>
                     <Link to="/login" className="new-session-btn" style={{ padding: '10px 24px', borderRadius: '8px', fontSize: '15px' }}>Спробувати безкоштовно</Link>
                 </nav>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
             </header>
 
             {/* HERO СЕКЦІЯ */}

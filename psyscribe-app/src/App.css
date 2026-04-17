@@ -1898,41 +1898,35 @@ header {
     margin-bottom: 24px !important;
   }
 
-  /* Тарифи */
-  .pricing-section {
-    display: flex !important;
-    flex-direction: column !important;
-    padding: 0 20px 40px 20px !important;
+  /* =========================================
+     4. ТАРИФИ (Перебиваємо інлайн-стилі React)
+     ========================================= */
+
+  /* Знаходимо сітку з тарифами (другий div всередині секції #pricing)
+     і вбиваємо жорстке обмеження у 400px */
+  #pricing > div:nth-of-type(2) {
+    grid-template-columns: 1fr !important;
     gap: 30px !important;
   }
 
-  .pricing-card {
-    width: 100% !important;
-    max-width: 100% !important;
+  /* Знаходимо самі картки і зменшуємо їхні гігантські відступи (50px та 60px) */
+  #pricing > div:nth-of-type(2) > div {
     padding: 30px 20px !important;
+    width: 100% !important;
     box-sizing: border-box !important;
-    margin: 0 !important;
-  }
-  /* Зменшуємо загальні бокові відступи всієї сторінки */
-  .container {
-    padding: 40px 15px !important;
   }
 
-  /* Дозволяємо кнопкам бути гнучкими і переносити довгий текст */
-  .btn, .new-session-btn {
+  /* Дозволяємо кнопкам у тарифах переносити текст на 2 рядки */
+  #pricing a {
     white-space: normal !important;
-    text-align: center !important;
+    height: auto !important;
     padding: 12px 15px !important;
     font-size: 14px !important;
-    height: auto !important;
-    width: 100% !important;
   }
 
-  /* Робимо картки "тоншими" зсередини, щоб контенту було чим дихати */
-  .pricing-card {
-    padding: 30px 20px !important;
-    width: 100% !important;
-    min-width: 0 !important; /* Вбиваємо будь-які жорсткі розміри */
-    box-sizing: border-box !important;
+  /* Зменшуємо величезну ціну на телефоні, щоб вона не тисла */
+  #pricing div[style*="fontSize: '56px'"],
+  #pricing div[style*="font-size: 56px"] {
+    font-size: 42px !important;
   }
 }

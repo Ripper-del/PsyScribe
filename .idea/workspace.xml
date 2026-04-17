@@ -95,7 +95,7 @@
       <workItem from="1775585873723" duration="25000" />
       <workItem from="1776284336510" duration="2773000" />
       <workItem from="1776346433804" duration="5708000" />
-      <workItem from="1776430818151" duration="4208000" />
+      <workItem from="1776430818151" duration="4436000" />
     </task>
     <task id="LOCAL-00001" summary="first commit (nothing done yet)">
       <option name="closed" value="true" />
@@ -377,7 +377,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776434907563</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="trying something different for phones' view 4.0 (this time might actually work)">
+      <option name="closed" value="true" />
+      <created>1776435070439</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1776435070439</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

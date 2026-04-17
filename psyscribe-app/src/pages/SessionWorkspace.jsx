@@ -134,17 +134,31 @@ export default function SessionWorkspace() {
     const toggleRecording = () => {
         if (!selectedClientId) return toast.error("Будь ласка, оберіть клієнта!");
 
+        // ФІКС: Якщо браузер не підтримує API (об'єкт не створився) - блокуємо запис
+        if (!recognitionRef.current) {
+            return toast.error("Ваш браузер (або його налаштування) не підтримує запис голосу. Будь ласка, використовуйте Google Chrome.", { duration: 5000 });
+        }
+
         if (isRecording) {
             isRecordingRef.current = false;
-            recognitionRef.current?.stop();
+            recognitionRef.current.stop();
             setIsRecording(false);
         } else {
             setTranscript('');
             setInterimTranscript('');
             setSeconds(0);
             isRecordingRef.current = true;
-            setIsRecording(true);
-            try { recognitionRef.current?.start(); } catch(e) {}
+
+            try {
+                // Спочатку намагаємося запустити мікрофон
+                recognitionRef.current.start();
+                // Якщо помилки немає, тільки тоді вмикаємо UI та таймер
+                setIsRecording(true);
+            } catch(e) {
+                console.error("Помилка старту мікрофона:", e);
+                isRecordingRef.current = false;
+                toast.error("Не вдалося запустити мікрофон. Перевірте дозволи.");
+            }
         }
     };
 

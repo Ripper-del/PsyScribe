@@ -1839,43 +1839,62 @@ header {
     margin-bottom: 0 !important;
   }
 }
-/* Це правило спрацює ТІЛЬКИ на екранах, менших за 768px (телефони та вертикальні планшети) */
+
 @media (max-width: 768px) {
-  /* Зменшуємо головний заголовок */
-  h1 {
-    font-size: 32px !important; /* Підбери розмір, який тобі подобається */
-    line-height: 1.2 !important;
-    margin-bottom: 20px !important;
+  /* =========================================
+     1. РЯТУЄМО ХЕДЕР (Робимо його акуратним)
+     ========================================= */
+  header {
+    display: flex !important;
+    justify-content: space-between !important; /* Розсовує лого і кнопку по краях */
+    align-items: center !important;
+    padding: 15px 20px !important;
   }
 
-  /* Зменшуємо текст підзаголовка */
-  p, .subtitle {
-    font-size: 16px !important;
-    line-height: 1.5 !important;
-  }
-
-  /* Зменшуємо бейдж "НАДІЙНА ПІДТРИМКА..." */
-  .badge-class-name {  /* Заміни на свій клас бейджа, якщо він є */
-    font-size: 10px !important;
-    padding: 6px 12px !important;
-  }
-}
-@media (max-width: 768px) {
-  /* ... попередні стилі для тексту ... */
-
-  /* Приховуємо текстові посилання в хедері на телефоні */
-  header a:not(.logo-link) { /* Або використай конкретний клас, де лежать "Тарифи" і "Увійти" */
+  /* Ховаємо тільки текстові посилання (Тарифи, тощо), але залишаємо Лого і Кнопку */
+  header a.nav-link,
+  header .header-links { /* Якщо в тебе є обгортка для посилань - вкажи її клас тут */
     display: none !important;
   }
 
-  /* Робимо шапку компактнішою */
-  header {
-    padding: 15px 10px !important;
+  /* Трохи зменшуємо логотип і кнопку, щоб вони влізли поруч */
+  .logo {
+    font-size: 20px !important;
   }
-
-  /* Трохи зменшуємо головну кнопку в хедері */
   header button {
     padding: 8px 16px !important;
     font-size: 14px !important;
+  }
+
+  /* =========================================
+     2. РЯТУЄМО ТЕКСТ (Типографіка)
+     ========================================= */
+  h1 {
+    font-size: 36px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 20px !important;
+  }
+  p, .subtitle {
+    font-size: 16px !important;
+  }
+
+  /* =========================================
+     3. РЯТУЄМО КАРТКИ ТАРИФІВ (Щоб не вилазили)
+     ========================================= */
+  /* Контейнер, який тримає картки. Робимо так, щоб вони стояли стовпчиком */
+  .pricing-container,
+  .cards-wrapper { /* Заміни на СВІЙ клас контейнера з тарифами */
+    display: flex !important;
+    flex-direction: column !important; /* Картки стають одна під одною */
+    gap: 30px !important; /* Відстань між базовим і PRO */
+    padding: 0 15px !important;
+  }
+
+  /* Самі картки: змушуємо їх підлаштовуватися під ширину екрана телефону */
+  .pricing-card { /* Заміни на СВІЙ клас картки тарифу */
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important; /* Прибираємо зайві відступи, які можуть ламати ширину */
   }
 }

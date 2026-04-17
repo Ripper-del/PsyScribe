@@ -1839,3 +1839,43 @@ header {
     margin-bottom: 0 !important;
   }
 }
+/* Це правило спрацює ТІЛЬКИ на екранах, менших за 768px (телефони та вертикальні планшети) */
+@media (max-width: 768px) {
+  /* Зменшуємо головний заголовок */
+  h1 {
+    font-size: 32px !important; /* Підбери розмір, який тобі подобається */
+    line-height: 1.2 !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Зменшуємо текст підзаголовка */
+  p, .subtitle {
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Зменшуємо бейдж "НАДІЙНА ПІДТРИМКА..." */
+  .badge-class-name {  /* Заміни на свій клас бейджа, якщо він є */
+    font-size: 10px !important;
+    padding: 6px 12px !important;
+  }
+}
+@media (max-width: 768px) {
+  /* ... попередні стилі для тексту ... */
+
+  /* Приховуємо текстові посилання в хедері на телефоні */
+  header a:not(.logo-link) { /* Або використай конкретний клас, де лежать "Тарифи" і "Увійти" */
+    display: none !important;
+  }
+
+  /* Робимо шапку компактнішою */
+  header {
+    padding: 15px 10px !important;
+  }
+
+  /* Трохи зменшуємо головну кнопку в хедері */
+  header button {
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+  }
+}

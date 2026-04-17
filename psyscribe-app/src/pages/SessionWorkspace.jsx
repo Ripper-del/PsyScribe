@@ -95,33 +95,33 @@ export default function SessionWorkspace() {
 
             // Визначаємо, чи це телефон
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            console.log('isMobile ', isMobile);
+
             recognition.continuous = true;
-            // 🔥 РЯТІВНИЙ РЯДОК: Вимикаємо interimResults на телефонах, щоб уникнути багу Android Chrome!
-            if(isMobile){
-                recognition.interimResults = False;
-            }
+            recognition.interimResults = !isMobile; // Пробуємо вимкнути через API
             recognition.lang = 'uk-UA';
 
             recognition.onresult = (event) => {
                 let finalStr = '';
                 let interimStr = '';
 
-                // Проходимо тільки по НОВИХ результатах (event.resultIndex)
                 for (let i = event.resultIndex; i < event.results.length; i++) {
                     if (event.results[i].isFinal) {
+                        // Якщо браузер сказав "Це 100% фінальне слово" - беремо
                         finalStr += event.results[i][0].transcript + ' ';
                     } else {
-                        interimStr += event.results[i][0].transcript + ' ';
+                        // 🔥 ФІКС: Якщо це телефон, ми ЖОРСТКО ігноруємо interim-результати,
+                        // навіть якщо браузер нахабно продовжує їх надсилати!
+                        if (!isMobile) {
+                            interimStr += event.results[i][0].transcript + ' ';
+                        }
                     }
                 }
 
-                // Як тільки фраза стала фінальною — бетонуємо її в нашу Історію
+                // Додаємо до історії ТІЛЬКИ повністю фінальні фрази
                 if (finalStr.trim() !== '') {
                     historyRef.current = (historyRef.current + ' ' + finalStr).trim() + ' ';
                 }
 
-                // Відображаємо: Затверджена історія + Поточний "сирий" шматок (на ПК)
                 setTranscript(historyRef.current);
                 setInterimTranscript(interimStr.trim());
             };
@@ -136,7 +136,6 @@ export default function SessionWorkspace() {
             };
 
             recognition.onend = () => {
-                // Якщо мікрофон відключився сам, але ми не тиснули "Стоп" — перезапускаємо
                 if (isRecordingRef.current) {
                     try { recognitionRef.current.start(); } catch(e) {}
                 } else {

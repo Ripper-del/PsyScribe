@@ -34,6 +34,8 @@ export default function SessionWorkspace() {
     const recognitionRef = useRef(null);
     const isRecordingRef = useRef(false);
 
+    const savedTranscriptRef = useRef(''); // Історія (збережений текст з попередніх пауз)
+    const currentSessionFinalRef = useRef(''); // Поточний буфер (те, що телефон розпізнає зараз)
     const fullTranscriptRef = useRef(''); // Зберігає весь затверджений текст
 
     useEffect(() => {
@@ -97,33 +99,30 @@ export default function SessionWorkspace() {
             recognition.interimResults = true;
             recognition.lang = 'uk-UA';
 
+            // 1. ОБРОБКА РЕЗУЛЬТАТІВ
             recognition.onresult = (event) => {
+                let finalStr = '';
                 let interimStr = '';
-                let newFinalStr = '';
 
-                // Проходимо по результатах, починаючи з того місця, де зупинилися минулого разу
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    // Якщо браузер впевнений, що це кінець фрази (фінальний результат)
+                // ЗАВЖДИ йдемо з 0, бо телефон постійно очищає масив event.results
+                for (let i = 0; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
-                        newFinalStr += event.results[i][0].transcript + ' ';
+                        finalStr += event.results[i][0].transcript + ' ';
                     } else {
-                        // Якщо браузер ще "думає" (проміжний результат)
                         interimStr += event.results[i][0].transcript;
                     }
                 }
 
-                // Якщо з'явився новий ФІНАЛЬНИЙ шматок — залізобетонно додаємо його до нашого сховища
-                if (newFinalStr.trim() !== '') {
-                    finalTranscriptRef.current += newFinalStr;
-                }
+                // ПЕРЕЗАПИСУЄМО поточний буфер (ніколи не робимо += тут!)
+                currentSessionFinalRef.current = finalStr;
 
-                // В інтерфейсі показуємо: [Затверджений текст] + [Те, що браузер зараз додумує]
-                setTranscript(finalTranscriptRef.current);
+                // Відображаємо на екрані: Історія + Поточний буфер
+                setTranscript((savedTranscriptRef.current + ' ' + currentSessionFinalRef.current).trim());
                 setInterimTranscript(interimStr);
             };
 
+            // 2. ОБРОБКА ПОМИЛОК
             recognition.onerror = (event) => {
-                // ... (твій код обробки помилок залишається без змін)
                 console.error("Помилка мікрофона:", event.error);
                 if (event.error === 'not-allowed') {
                     toast.error("Доступ до мікрофона заблоковано!");
@@ -135,14 +134,15 @@ export default function SessionWorkspace() {
             recognitionRef.current = recognition;
         }
 
+        // 3. ОБРОБКА ПАУЗ (Коли мікрофон на секунду вимикається)
         if (recognitionRef.current) {
             recognitionRef.current.onend = () => {
                 if (isRecordingRef.current) {
-                    // КОЛИ МІКРОФОН РОБИТЬ ПАУЗУ:
-                    // Назавжди зберігаємо останню фразу в загальний текст і очищаємо буфер
-                    fullTranscriptRef.current = (fullTranscriptRef.current + ' ' + currentSessionFinalRef.current).trim();
-                    currentSessionFinalRef.current = '';
+                    // Коли сталася пауза, переносимо поточний буфер в Історію
+                    savedTranscriptRef.current = (savedTranscriptRef.current + ' ' + currentSessionFinalRef.current).trim();
+                    currentSessionFinalRef.current = ''; // Очищаємо буфер для нових слів
 
+                    // Знову запускаємо мікрофон
                     try { recognitionRef.current.start(); } catch(e) {}
                 }
             };
@@ -164,8 +164,9 @@ export default function SessionWorkspace() {
             setInterimTranscript('');
             setSeconds(0);
 
-            // ДОДАТИ ЦІ ДВА РЯДКИ:
-            fullTranscriptRef.current = '';
+            // ОЧИЩАЄМО ПАМ'ЯТЬ ПЕРЕД НОВИМ ЗАПИСОМ
+            savedTranscriptRef.current = '';
+            currentSessionFinalRef.current = '';
 
             isRecordingRef.current = true;
             try {

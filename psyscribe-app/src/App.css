@@ -1802,3 +1802,6 @@ header {
 .sidebar-overlay {
   display: none;
 }
+.mobile-panel-toggle {
+  display: none;
+}

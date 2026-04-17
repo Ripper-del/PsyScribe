@@ -96,7 +96,7 @@ export default function SessionWorkspace() {
             // Визначаємо, чи це телефон
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-            recognition.continuous = false;
+            recognition.continuous = true;
             recognition.interimResults = false; // Пробуємо вимкнути через API
             recognition.lang = 'uk-UA';
 

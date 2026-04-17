@@ -35,7 +35,6 @@ export default function SessionWorkspace() {
     const isRecordingRef = useRef(false);
 
     const fullTranscriptRef = useRef(''); // Зберігає весь затверджений текст
-    const currentSessionFinalRef = useRef(''); // Зберігає текст поточної фрази
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -99,24 +98,27 @@ export default function SessionWorkspace() {
             recognition.lang = 'uk-UA';
 
             recognition.onresult = (event) => {
-                let finalStr = '';
                 let interimStr = '';
+                let newFinalStr = '';
 
-                // ФІКС 1: Йдемо ЗАВЖДИ з 0. Мобільні браузери ламають event.resultIndex!
-                for (let i = 0; i < event.results.length; ++i) {
+                // Проходимо по результатах, починаючи з того місця, де зупинилися минулого разу
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    // Якщо браузер впевнений, що це кінець фрази (фінальний результат)
                     if (event.results[i].isFinal) {
-                        finalStr += event.results[i][0].transcript + ' ';
+                        newFinalStr += event.results[i][0].transcript + ' ';
                     } else {
+                        // Якщо браузер ще "думає" (проміжний результат)
                         interimStr += event.results[i][0].transcript;
                     }
                 }
 
-                // ФІКС 2: ПЕРЕЗАПИСУЄМО поточну сесію, а не додаємо (+=).
-                // Це знищує будь-які дублікати від мобільного браузера.
-                currentSessionFinalRef.current = finalStr;
+                // Якщо з'явився новий ФІНАЛЬНИЙ шматок — залізобетонно додаємо його до нашого сховища
+                if (newFinalStr.trim() !== '') {
+                    finalTranscriptRef.current += newFinalStr;
+                }
 
-                // Склеюємо старі записи (якщо були паузи мікрофона) з поточною фразою
-                setTranscript((fullTranscriptRef.current + ' ' + currentSessionFinalRef.current).trim());
+                // В інтерфейсі показуємо: [Затверджений текст] + [Те, що браузер зараз додумує]
+                setTranscript(finalTranscriptRef.current);
                 setInterimTranscript(interimStr);
             };
 
@@ -164,7 +166,6 @@ export default function SessionWorkspace() {
 
             // ДОДАТИ ЦІ ДВА РЯДКИ:
             fullTranscriptRef.current = '';
-            currentSessionFinalRef.current = '';
 
             isRecordingRef.current = true;
             try {

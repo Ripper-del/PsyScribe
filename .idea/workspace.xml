@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="fixing speech recognition for phones">
+    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="fixing speech recognition for phones 3.0">
       <change afterPath="$PROJECT_DIR$/psyscribe-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/.env" afterDir="false" />
@@ -96,23 +96,7 @@
       <workItem from="1775585873723" duration="25000" />
       <workItem from="1776284336510" duration="2773000" />
       <workItem from="1776346433804" duration="5708000" />
-      <workItem from="1776430818151" duration="9946000" />
-    </task>
-    <task id="LOCAL-00010" summary="commit (done the whole idea)">
-      <option name="closed" value="true" />
-      <created>1774473462042</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1774473462042</updated>
-    </task>
-    <task id="LOCAL-00011" summary="commit (done the whole idea)">
-      <option name="closed" value="true" />
-      <created>1774473702846</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1774473702846</updated>
+      <workItem from="1776430818151" duration="10592000" />
     </task>
     <task id="LOCAL-00012" summary="commit (done the whole idea)">
       <option name="closed" value="true" />
@@ -490,15 +474,29 @@
       <option name="project" value="LOCAL" />
       <updated>1776440662376</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="fixing speech recognition for phones 2.0">
+      <option name="closed" value="true" />
+      <created>1776440848031</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1776440848031</updated>
+    </task>
+    <task id="LOCAL-00060" summary="fixing speech recognition for phones 3.0">
+      <option name="closed" value="true" />
+      <created>1776441117719</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1776441117719</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="trying something different for phones' view" />
-    <MESSAGE value="trying something different for phones' view 2.0" />
     <MESSAGE value="trying something different for phones' view 3.0" />
     <MESSAGE value="trying something different for phones' view 4.0 (this time might actually work)" />
     <MESSAGE value="trying something different for phones' view 5.0 (this time might actually work)" />
@@ -522,6 +520,8 @@
     <MESSAGE value="fixed sidebar" />
     <MESSAGE value="fixed sidebar 2.0" />
     <MESSAGE value="fixing speech recognition for phones" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixing speech recognition for phones" />
+    <MESSAGE value="fixing speech recognition for phones 2.0" />
+    <MESSAGE value="fixing speech recognition for phones 3.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing speech recognition for phones 3.0" />
   </component>
 </project>

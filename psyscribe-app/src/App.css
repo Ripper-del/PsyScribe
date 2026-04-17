@@ -1604,11 +1604,11 @@ header {
     width: 100vw !important; /* На всю ширину екрана */
     height: 70px !important; /* Жорстко фіксуємо висоту шапки */
     box-sizing: border-box !important;
-    .mobile-header .db-logo {
-      margin-top: 0 !important;
-      align-self: center !important;
-      line-height: 1 !important;
-    }
+  }
+  .mobile-header .db-logo {
+    margin-top: 0 !important;
+    align-self: center !important;
+    line-height: 1 !important;
   }
 
   .burger-btn { background: none !important; border: none !important; color: #c8a96e !important; font-size: 28px !important; cursor: pointer !important; padding: 0 !important; }

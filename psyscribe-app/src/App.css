@@ -1630,13 +1630,38 @@ header {
     box-sizing: border-box !important;
   }
 
-  /* РЯТУЄМО ГІГАНТСЬКИЙ ТЕКСТ: Зменшуємо шрифти і дозволяємо перенесення слів */
-  .cp-hero-card { flex-direction: column !important; align-items: flex-start !important; padding: 20px !important; gap: 15px !important; border-radius: 16px !important; width: 100% !important; box-sizing: border-box !important; }
+  .cp-hero-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    padding: 20px !important;
+    gap: 15px !important;
+    border-radius: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    /* ДОДАТИ: прибираємо overflow hidden якщо є */
+    overflow: visible !important;
+    min-height: unset !important;
+  }
+
+  .cp-hero-title {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
   .cp-hero-title h1 {
-    font-size: 26px !important;
+    font-size: 22px !important;
     white-space: normal !important;
     word-wrap: break-word !important;
-    line-height: 1.2 !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.3 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .cp-hero-info {
+    width: 100% !important;
   }
 
   .new-session-btn { width: 100% !important; justify-content: center !important; }

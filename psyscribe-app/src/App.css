@@ -1587,7 +1587,9 @@ header {
   #pricing div[style*="fontSize: '56px'"], #pricing div[style*="font-size: 56px"] { font-size: 42px !important; }
 
   /* --- ДАШБОРД --- */
-  /* Змушуємо мобільну шапку завжди висіти зверху */
+  .dashboard-layout { display: flex !important; flex-direction: column !important; width: 100% !important; overflow-x: hidden !important; }
+
+  /* Змушуємо мобільну шапку ЗАВЖДИ висіти зверху і не пускати під себе контент */
   .mobile-header {
     display: flex !important;
     justify-content: space-between !important;
@@ -1595,18 +1597,10 @@ header {
     padding: 15px 20px !important;
     background: #151619 !important;
     border-bottom: 1px solid #25262b !important;
-    position: fixed !important; /* Змінили sticky на fixed */
+    position: fixed !important; /* Тепер вона прибита цвяхами */
     top: 0 !important;
-    left: 0 !important; /* Додали жорстку прив'язку до лівого краю */
+    left: 0 !important;
     z-index: 100 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Відсуваємо контент вниз, щоб він не ховався під фіксованою шапкою */
-  .db-content-wrapper {
-    margin-left: 0 !important;
-    margin-top: 70px !important; /* Додали 70px відступу зверху (висота шапки) */
     width: 100% !important;
     box-sizing: border-box !important;
   }
@@ -1622,9 +1616,31 @@ header {
   .close-sidebar-btn { display: block !important; position: absolute !important; top: 20px !important; right: 20px !important; background: none !important; border: none !important; color: #8a8d91 !important; font-size: 24px !important; cursor: pointer !important; }
   .sidebar-overlay { display: block !important; position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(14, 15, 17, 0.8) !important; backdrop-filter: blur(4px) !important; z-index: 999 !important; }
 
-  .db-content-wrapper { margin-left: 0 !important; width: 100% !important; box-sizing: border-box !important; }
-  .db-content { padding: 20px !important; }
-  .cp-hero-card { flex-direction: column !important; align-items: flex-start !important; padding: 25px !important; gap: 20px !important; border-radius: 20px !important; }
+  /* Фізично відсуваємо весь контент вниз на 70px (висота шапки), щоб він не перекривався */
+  .db-content-wrapper {
+    margin-left: 0 !important;
+    margin-top: 70px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .db-content {
+    padding: 15px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* РЯТУЄМО ГІГАНТСЬКИЙ ТЕКСТ: Зменшуємо шрифти і дозволяємо перенесення слів */
+  .cp-hero-card { flex-direction: column !important; align-items: flex-start !important; padding: 20px !important; gap: 15px !important; border-radius: 16px !important; width: 100% !important; box-sizing: border-box !important; }
+  .cp-hero-title h1 {
+    font-size: 26px !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    line-height: 1.2 !important;
+  }
+
   .new-session-btn { width: 100% !important; justify-content: center !important; }
-  .db-stats-grid { grid-template-columns: 1fr !important; }
+
+  /* Жорстко обмежуємо ширину карток статистики, щоб не вилазили за край */
+  .db-stats-grid { grid-template-columns: 1fr !important; gap: 15px !important; width: 100% !important; box-sizing: border-box !important; }
+  .db-stat-card { padding: 20px !important; width: 100% !important; box-sizing: border-box !important; margin: 0 !important; }
 }

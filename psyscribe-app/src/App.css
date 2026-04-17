@@ -1619,7 +1619,7 @@ header {
   /* Фізично відсуваємо весь контент вниз (збільшили до 90px) */
   .db-content-wrapper {
     margin-left: 0 !important;
-    margin-top: 90px !important;
+    margin-top: 110px !important;
     width: 100% !important;
     box-sizing: border-box !important;
   }

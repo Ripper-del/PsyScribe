@@ -93,37 +93,31 @@ export default function SessionWorkspace() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
 
-            // Визначаємо, чи це телефон
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
+            // Тепер можна безпечно залишити ці налаштування для всіх пристроїв
             recognition.continuous = true;
-            recognition.interimResults = false; // Пробуємо вимкнути через API
+            recognition.interimResults = true;
             recognition.lang = 'uk-UA';
 
             recognition.onresult = (event) => {
-                let finalStr = '';
-                let interimStr = '';
+                let currentSessionFinal = '';
+                let currentSessionInterim = '';
 
-                for (let i = event.resultIndex; i < event.results.length; i++) {
+                // 🔥 ГОЛОВНИЙ ФІКС: Завжди йдемо з 0!
+                // Ми заново перезбируємо все, що телефон почув у поточній сесії.
+                for (let i = 0; i < event.results.length; i++) {
                     if (event.results[i].isFinal) {
-                        // Якщо браузер сказав "Це 100% фінальне слово" - беремо
-                        finalStr += event.results[i][0].transcript + ' ';
+                        currentSessionFinal += event.results[i][0].transcript + ' ';
                     } else {
-                        // 🔥 ФІКС: Якщо це телефон, ми ЖОРСТКО ігноруємо interim-результати,
-                        // навіть якщо браузер нахабно продовжує їх надсилати!
-                        if (!isMobile) {
-                            interimStr += event.results[i][0].transcript + ' ';
-                        }
+                        currentSessionInterim += event.results[i][0].transcript + ' ';
                     }
                 }
 
-                // Додаємо до історії ТІЛЬКИ повністю фінальні фрази
-                if (finalStr.trim() !== '') {
-                    historyRef.current = (historyRef.current + ' ' + finalStr).trim() + ' ';
-                }
+                // ПРОСТО ПЕРЕЗАПИСУЄМО буфер поточної сесії (ніяких +=)
+                currentSessionRef.current = currentSessionFinal;
 
-                setTranscript(historyRef.current);
-                setInterimTranscript(interimStr.trim());
+                // На екрані малюємо: [Те, що зберегли з минулих пауз] + [Те, що говоримо зараз]
+                setTranscript((historyRef.current + ' ' + currentSessionFinal).trim());
+                setInterimTranscript(currentSessionInterim.trim());
             };
 
             recognition.onerror = (event) => {
@@ -136,6 +130,13 @@ export default function SessionWorkspace() {
             };
 
             recognition.onend = () => {
+                // Коли мікрофон робить паузу (сесія завершилась) — тільки тоді зберігаємо в Історію
+                if (currentSessionRef.current.trim() !== '') {
+                    historyRef.current = (historyRef.current + ' ' + currentSessionRef.current).trim() + ' ';
+                    currentSessionRef.current = ''; // Очищаємо буфер для наступної фрази
+                }
+
+                // Перезапускаємо мікрофон, якщо не тиснули кнопку "Стоп"
                 if (isRecordingRef.current) {
                     try { recognitionRef.current.start(); } catch(e) {}
                 } else {

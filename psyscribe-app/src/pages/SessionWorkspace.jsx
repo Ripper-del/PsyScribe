@@ -99,23 +99,24 @@ export default function SessionWorkspace() {
             recognition.lang = 'uk-UA';
 
             recognition.onresult = (event) => {
-                let finalStr = '';
+                let newFinalStr = '';
                 let interimStr = '';
 
-                // ПРОХОДИМО ПО ВСЬОМУ МАСИВУ з 0 (а не з event.resultIndex)
-                for (let i = 0; i < event.results.length; ++i) {
+                // Йдемо тільки з event.resultIndex, а не з 0!
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
-                        finalStr += event.results[i][0].transcript + ' ';
+                        newFinalStr += event.results[i][0].transcript + ' ';
                     } else {
                         interimStr += event.results[i][0].transcript;
                     }
                 }
 
-                // Зберігаємо фінальну частину поточної фрази в реф
-                currentSessionFinalRef.current = finalStr;
+                // Якщо є нові фінальні слова — додаємо до реф
+                if (newFinalStr) {
+                    currentSessionFinalRef.current += newFinalStr;
+                }
 
-                // Відображаємо: весь старий текст + поточна фінальна фраза
-                setTranscript((fullTranscriptRef.current + ' ' + finalStr).trim());
+                setTranscript((fullTranscriptRef.current + ' ' + currentSessionFinalRef.current).trim());
                 setInterimTranscript(interimStr);
             };
 

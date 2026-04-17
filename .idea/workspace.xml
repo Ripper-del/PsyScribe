@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="trying something different for phones' view 11.0 (fixing dashboard now)">
+    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="trying something different for phones' view 13.0 (fixing dashboard now)">
       <change afterPath="$PROJECT_DIR$/psyscribe-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/.env" afterDir="false" />
@@ -96,7 +96,7 @@
       <workItem from="1775585873723" duration="25000" />
       <workItem from="1776284336510" duration="2773000" />
       <workItem from="1776346433804" duration="5708000" />
-      <workItem from="1776430818151" duration="5180000" />
+      <workItem from="1776430818151" duration="5507000" />
     </task>
     <task id="LOCAL-00001" summary="first commit (nothing done yet)">
       <option name="closed" value="true" />
@@ -418,7 +418,23 @@
       <option name="project" value="LOCAL" />
       <updated>1776435841378</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="trying something different for phones' view 12.0 (fixing dashboard now)">
+      <option name="closed" value="true" />
+      <created>1776436045612</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1776436045612</updated>
+    </task>
+    <task id="LOCAL-00042" summary="trying something different for phones' view 13.0 (fixing dashboard now)">
+      <option name="closed" value="true" />
+      <created>1776436231677</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1776436231677</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,6 +459,8 @@
     <MESSAGE value="trying something different for phones' view 5.0 (this time might actually work)" />
     <MESSAGE value="trying something different for phones' view 10.0 (fixing dashboard now)" />
     <MESSAGE value="trying something different for phones' view 11.0 (fixing dashboard now)" />
-    <option name="LAST_COMMIT_MESSAGE" value="trying something different for phones' view 11.0 (fixing dashboard now)" />
+    <MESSAGE value="trying something different for phones' view 12.0 (fixing dashboard now)" />
+    <MESSAGE value="trying something different for phones' view 13.0 (fixing dashboard now)" />
+    <option name="LAST_COMMIT_MESSAGE" value="trying something different for phones' view 13.0 (fixing dashboard now)" />
   </component>
 </project>

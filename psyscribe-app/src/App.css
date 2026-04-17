@@ -1840,62 +1840,74 @@ header {
   }
 }
 
-
 @media (max-width: 768px) {
   /* =========================================
-     1. РЯТУЄМО ХЕДЕР (Робимо його акуратним)
+     1. РЯТУЄМО ХЕДЕР ЛЕНДІНГУ
      ========================================= */
-  header {
-    display: flex !important;
-    justify-content: space-between !important; /* Розсовує лого і кнопку по краях */
-    align-items: center !important;
+  .landing-header {
     padding: 15px 20px !important;
   }
 
-  /* Ховаємо тільки текстові посилання (Тарифи, тощо), але залишаємо Лого і Кнопку */
-  header a.nav-link,
-  header .header-links { /* Якщо в тебе є обгортка для посилань - вкажи її клас тут */
+  /* Ховаємо центральну навігацію (Тарифи тощо) */
+  .header-nav {
     display: none !important;
   }
 
-  /* Трохи зменшуємо логотип і кнопку, щоб вони влізли поруч */
+  /* Зменшуємо лого і кнопку, щоб влізли поруч */
   .logo {
     font-size: 20px !important;
   }
-  header button {
+  .landing-header .btn {
     padding: 8px 16px !important;
     font-size: 14px !important;
   }
 
   /* =========================================
-     2. РЯТУЄМО ТЕКСТ (Типографіка)
+     2. РЯТУЄМО СІТКИ (Усе в одну колонку)
      ========================================= */
-  h1 {
-    font-size: 36px !important;
-    line-height: 1.2 !important;
-    margin-bottom: 20px !important;
+  /* Головний екран, Проблеми та Кроки тепер стоятимуть один під одним */
+  .hero-section,
+  .problem-grid,
+  .solution-steps {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+    padding: 60px 20px !important;
   }
-  p, .subtitle {
-    font-size: 16px !important;
+
+  .hero-visual {
+    display: none !important; /* Ховаємо абстрактні кола на телефоні, щоб не займали пів екрана */
   }
 
   /* =========================================
-     3. РЯТУЄМО КАРТКИ ТАРИФІВ (Щоб не вилазили)
+     3. РЯТУЄМО ТЕКСТ
      ========================================= */
-  /* Контейнер, який тримає картки. Робимо так, щоб вони стояли стовпчиком */
-  .pricing-container,
-  .cards-wrapper { /* Заміни на СВІЙ клас контейнера з тарифами */
-    display: flex !important;
-    flex-direction: column !important; /* Картки стають одна під одною */
-    gap: 30px !important; /* Відстань між базовим і PRO */
-    padding: 0 15px !important;
+  .hero-title {
+    font-size: 36px !important;
+    line-height: 1.2 !important;
+  }
+  .hero-subtitle {
+    font-size: 16px !important;
+  }
+  .section-title {
+    font-size: 30px !important;
+    margin-bottom: 30px !important;
   }
 
-  /* Самі картки: змушуємо їх підлаштовуватися під ширину екрана телефону */
-  .pricing-card { /* Заміни на СВІЙ клас картки тарифу */
+  /* =========================================
+     4. РЯТУЄМО ТАРИФИ (Щоб не вилазили)
+     ========================================= */
+  .pricing-section {
+    display: flex !important;
+    flex-direction: column !important; /* Картки стають одна під одною */
+    gap: 30px !important;
+    padding: 0 20px !important;
+  }
+
+  .pricing-card {
     width: 100% !important;
     max-width: 100% !important;
+    padding: 40px 20px !important; /* Робимо внутрішні відступи трохи меншими на телефоні */
     box-sizing: border-box !important;
-    margin: 0 !important; /* Прибираємо зайві відступи, які можуть ламати ширину */
+    margin: 0 !important;
   }
 }

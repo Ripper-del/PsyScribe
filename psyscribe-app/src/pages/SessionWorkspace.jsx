@@ -91,16 +91,21 @@ export default function SessionWorkspace() {
         if (!recognitionRef.current) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
+
+            // Визначаємо, чи це телефон
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
             recognition.continuous = true;
-            recognition.interimResults = true;
+            // 🔥 РЯТІВНИЙ РЯДОК: Вимикаємо interimResults на телефонах, щоб уникнути багу Android Chrome!
+            recognition.interimResults = !isMobile;
             recognition.lang = 'uk-UA';
 
             recognition.onresult = (event) => {
                 let finalStr = '';
                 let interimStr = '';
 
-                // ІДЕАЛЬНИЙ ЦИКЛ: Завжди збираємо масив браузера з нуля (i = 0)
-                for (let i = 0; i < event.results.length; i++) {
+                // Проходимо тільки по НОВИХ результатах (event.resultIndex)
+                for (let i = event.resultIndex; i < event.results.length; i++) {
                     if (event.results[i].isFinal) {
                         finalStr += event.results[i][0].transcript + ' ';
                     } else {
@@ -108,11 +113,13 @@ export default function SessionWorkspace() {
                     }
                 }
 
-                // ПЕРЕЗАПИСУЄМО буфер. Жодних +=, тому снігового кому не буде!
-                currentSessionRef.current = finalStr;
+                // Як тільки фраза стала фінальною — бетонуємо її в нашу Історію
+                if (finalStr.trim() !== '') {
+                    historyRef.current = (historyRef.current + ' ' + finalStr).trim() + ' ';
+                }
 
-                // На екрані показуємо: Історія з минулих пауз + Те, що розпізналося щойно
-                setTranscript((historyRef.current + ' ' + finalStr).trim());
+                // Відображаємо: Затверджена історія + Поточний "сирий" шматок (на ПК)
+                setTranscript(historyRef.current);
                 setInterimTranscript(interimStr.trim());
             };
 
@@ -126,13 +133,7 @@ export default function SessionWorkspace() {
             };
 
             recognition.onend = () => {
-                // Коли мікрофон робить паузу (або вимикається), цементуємо поточний текст в Історію
-                if (currentSessionRef.current.trim() !== '') {
-                    historyRef.current = (historyRef.current + ' ' + currentSessionRef.current).trim() + ' ';
-                    currentSessionRef.current = '';
-                }
-
-                // Якщо ми не натискали "Стоп" — миттєво перезапускаємо мікрофон
+                // Якщо мікрофон відключився сам, але ми не тиснули "Стоп" — перезапускаємо
                 if (isRecordingRef.current) {
                     try { recognitionRef.current.start(); } catch(e) {}
                 } else {

@@ -99,23 +99,23 @@ export default function SessionWorkspace() {
             recognition.lang = 'uk-UA';
 
             recognition.onresult = (event) => {
-                let newFinalStr = '';
+                let finalStr = '';
                 let interimStr = '';
 
-                // Йдемо тільки з event.resultIndex, а не з 0!
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                // ФІКС 1: Йдемо ЗАВЖДИ з 0. Мобільні браузери ламають event.resultIndex!
+                for (let i = 0; i < event.results.length; ++i) {
                     if (event.results[i].isFinal) {
-                        newFinalStr += event.results[i][0].transcript + ' ';
+                        finalStr += event.results[i][0].transcript + ' ';
                     } else {
                         interimStr += event.results[i][0].transcript;
                     }
                 }
 
-                // Якщо є нові фінальні слова — додаємо до реф
-                if (newFinalStr) {
-                    currentSessionFinalRef.current += newFinalStr;
-                }
+                // ФІКС 2: ПЕРЕЗАПИСУЄМО поточну сесію, а не додаємо (+=).
+                // Це знищує будь-які дублікати від мобільного браузера.
+                currentSessionFinalRef.current = finalStr;
 
+                // Склеюємо старі записи (якщо були паузи мікрофона) з поточною фразою
                 setTranscript((fullTranscriptRef.current + ' ' + currentSessionFinalRef.current).trim());
                 setInterimTranscript(interimStr);
             };

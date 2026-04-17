@@ -28,26 +28,27 @@ export default function SessionWorkspace() {
     const [copySoapStatus, setCopySoapStatus] = useState('КОПІЮВАТИ ВСЕ');
     const [isPaywallOpen, setIsPaywallOpen] = useState(false);
 
+    // НОВЕ: Стан для мобільної панелі (за замовчуванням відкрита)
+    const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(true);
+
     const recognitionRef = useRef(null);
     const isRecordingRef = useRef(false);
 
     useEffect(() => {
         const fetchInitialData = async () => {
-            // 1. Правильно достаем юзера и сразу проверяем на ошибки
             const { data: { user }, error: authError } = await supabase.auth.getUser();
             if (authError || !user) {
                 navigate('/login');
                 return;
             }
 
-            // 2. ФИКС RLS: Явно фильтруем клиентов по ID текущего терапевта
             const { data: clientsData, error: clientsError } = await supabase
                 .from('clients')
                 .select('id, name, created_at')
-                .eq('user_id', user.id) // <--- ОБЯЗАТЕЛЬНАЯ СТРОКА
+                .eq('user_id', user.id)
                 .order('created_at', { ascending: true });
 
-            if (clientsError) console.error("Ошибка загрузки:", clientsError);
+            if (clientsError) console.error("Помилка завантаження:", clientsError);
             if (clientsData) setClients(clientsData);
 
             const { data: profileData } = await supabase
@@ -65,11 +66,10 @@ export default function SessionWorkspace() {
         fetchInitialData();
     }, [navigate]);
 
-    // ДОДАНО: Функція перевірки, чи заблокований клієнт
     const isClientLocked = (clientId) => {
         if (planType === 'pro') return false;
         const index = clients.findIndex(c => c.id === clientId);
-        return index >= 3; // Якщо він 4-й і далі (індекс 3+) - блокуємо
+        return index >= 3;
     };
 
     useEffect(() => {
@@ -83,10 +83,9 @@ export default function SessionWorkspace() {
     }, [isRecording]);
 
     useEffect(() => {
-        // 1. Перевірка: чи взагалі браузер вміє слухати?
         if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
             console.warn("Браузер не підтримує SpeechRecognition");
-            return; // Виходимо, якщо API немає
+            return;
         }
 
         if (!recognitionRef.current) {
@@ -107,15 +106,12 @@ export default function SessionWorkspace() {
                 setInterimTranscript(interimStr);
             };
 
-            // ДОДАНО: Відловлюємо помилки, щоб знати, що йде не так
             recognition.onerror = (event) => {
                 console.error("Помилка мікрофона:", event.error);
                 if (event.error === 'not-allowed') {
-                    toast.error("Доступ до мікрофона заблоковано браузером!");
+                    toast.error("Доступ до мікрофона заблоковано!");
                     setIsRecording(false);
                     isRecordingRef.current = false;
-                } else if (event.error === 'network') {
-                    toast.error("Помилка мережі при розпізнаванні голосу.");
                 }
             };
 
@@ -133,10 +129,8 @@ export default function SessionWorkspace() {
 
     const toggleRecording = () => {
         if (!selectedClientId) return toast.error("Будь ласка, оберіть клієнта!");
-
-        // ФІКС: Якщо браузер не підтримує API (об'єкт не створився) - блокуємо запис
         if (!recognitionRef.current) {
-            return toast.error("Ваш браузер (або його налаштування) не підтримує запис голосу. Будь ласка, використовуйте Google Chrome.", { duration: 5000 });
+            return toast.error("Ваш браузер не підтримує запис голосу. Використовуйте Google Chrome.");
         }
 
         if (isRecording) {
@@ -148,23 +142,18 @@ export default function SessionWorkspace() {
             setInterimTranscript('');
             setSeconds(0);
             isRecordingRef.current = true;
-
             try {
-                // Спочатку намагаємося запустити мікрофон
                 recognitionRef.current.start();
-                // Якщо помилки немає, тільки тоді вмикаємо UI та таймер
                 setIsRecording(true);
             } catch(e) {
-                console.error("Помилка старту мікрофона:", e);
                 isRecordingRef.current = false;
-                toast.error("Не вдалося запустити мікрофон. Перевірте дозволи.");
+                toast.error("Помилка старту мікрофона.");
             }
         }
     };
 
     const generateSOAP = async () => {
         const finalTranscript = `${transcript} ${interimTranscript} \n\n ${manualTranscript}`.trim();
-
         if (!finalTranscript) return toast.error('Текст розмови порожній!');
         if (!selectedClientId) return toast.error('Оберіть клієнта!');
 
@@ -182,11 +171,11 @@ export default function SessionWorkspace() {
 
         setActiveTab('soap');
         setIsLoadingSoap(true);
-        setSoapData(null);
+        // При генерації на мобільних автоматично ховаємо ліву панель, щоб бачити результат
+        setIsMobilePanelOpen(false);
 
         try {
             const clientName = clients.find(c => c.id === selectedClientId)?.name || "Клієнт";
-
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/generate-soap`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -201,28 +190,22 @@ export default function SessionWorkspace() {
 
             if (!response.ok) throw new Error("Помилка при з'єднанні з AI-сервером");
 
-            // ... (ожидание ответа от ШИ)
             const data = await response.json();
             setSoapData(data);
 
-            // ФИКС RLS: Безопасно достаем user и проверяем его наличие
-            const { data: { user }, error: authError } = await supabase.auth.getUser();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error("Користувача не знайдено");
 
-            if (authError || !user) {
-                throw new Error("Не удалось идентифицировать пользователя для сохранения сессии");
-            }
-
-            // Теперь insert 100% соответствует политике WITH CHECK (auth.uid() = user_id)
             const { error: dbError } = await supabase.from('sessions').insert([{
                 client_id: selectedClientId,
-                user_id: user.id, // Используем чистый user.id
+                user_id: user.id,
                 transcript: finalTranscript,
                 soap_note: data,
                 therapy_type: therapyType
             }]);
 
             if (dbError) throw dbError;
-            toast.success("Сессию проанализировано и сохранено!");
+            toast.success("Сесію збережено!");
 
         } catch (err) {
             console.error(err);
@@ -230,22 +213,6 @@ export default function SessionWorkspace() {
         } finally {
             setIsLoadingSoap(false);
         }
-    };
-
-    const handleCreateClient = async (clientData) => {
-        // Отримуємо поточного юзера з сесії Supabase
-        const { data: { user } } = await supabase.auth.getUser();
-
-        const { data, error } = await supabase
-            .from('clients')
-            .insert([
-                {
-                    ...clientData,
-                    user_id: user.id // Обов'язково додаємо цей рядок!
-                }
-            ]);
-
-        if (error) toast.error(error.message);
     };
 
     const handleCopyTranscript = () => {
@@ -269,62 +236,42 @@ export default function SessionWorkspace() {
         return `${m}:${s}`;
     };
 
-    // Змінна для перевірки, чи обраний клієнт заблокований
     const isCurrentClientLocked = selectedClientId && isClientLocked(selectedClientId);
+
     const handleSubscribe = async () => {
         try {
-            // Отримуємо поточного юзера
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) return toast.error("Будь ласка, увійдіть в систему!");
-
             const PRICE_ID = 'price_1TEtb3C7woZkJdzPKXTKL0P4';
-
             toast.loading("Готуємо сторінку оплати...", { id: 'stripe-loading' });
-
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/create-checkout-session`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: user.id,
-                    userEmail: user.email,
-                    priceId: PRICE_ID
-                }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: user.id, userEmail: user.email, priceId: PRICE_ID }),
             });
-
             const data = await response.json();
             toast.dismiss('stripe-loading');
-
-            if (data.url) {
-                // Магія: перенаправляємо користувача на безпечну сторінку Stripe!
-                window.location.href = data.url;
-            } else {
-                toast.error("Не вдалося створити сесію: " + (data.error || "Невідома помилка"));
-            }
+            if (data.url) window.location.href = data.url;
+            else toast.error("Помилка створення сесії Stripe");
         } catch (error) {
-            console.error("Помилка:", error);
-            toast.dismiss('stripe-loading');
-            toast.error("Помилка з'єднання з сервером");
+            toast.error("Помилка з'єднання");
         }
     };
 
     return (
-
         <div className="workspace-layout">
             <header>
                 <div className="logo" onClick={() => navigate('/dashboard')} style={{cursor: 'pointer'}}>
                     <div className="logo-dot"></div>
                     PsyScribe
                 </div>
-
                 <div className="header-selector">
                     <label>Клієнт:</label>
                     <select
                         value={selectedClientId}
                         onChange={(e) => {
                             setSelectedClientId(e.target.value);
-                            setIsRecording(false); // Зупиняємо запис при зміні клієнта
+                            setIsRecording(false);
                             if(recognitionRef.current) recognitionRef.current.stop();
                         }}
                         className="client-dropdown"
@@ -333,7 +280,6 @@ export default function SessionWorkspace() {
                         {clients.map((c, index) => {
                             const locked = planType === 'free' && index >= 3;
                             return (
-                                // Додаємо візуальний маркер в дропдаун
                                 <option key={c.id} value={c.id}>
                                     {c.name} {locked ? ' 🔒 (PRO)' : ''}
                                 </option>
@@ -344,7 +290,6 @@ export default function SessionWorkspace() {
             </header>
 
             <main style={{ position: 'relative' }}>
-                {/* --- ОВЕРЛЕЙ БЛОКУВАННЯ ЯКЩО ОБРАНО PRO-КЛІЄНТА --- */}
                 {isCurrentClientLocked && (
                     <div style={{
                         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
@@ -355,16 +300,22 @@ export default function SessionWorkspace() {
                         <div style={{ fontSize: '48px', marginBottom: '15px' }}>🔒</div>
                         <h2 style={{ fontFamily: 'Playfair Display', color: '#c8a96e', marginBottom: '10px' }}>Клієнт заблокований</h2>
                         <p style={{ color: '#8a8d91', textAlign: 'center', maxWidth: '400px', marginBottom: '25px', lineHeight: '1.6' }}>
-                            Цей клієнт виходить за ліміт безкоштовного тарифу (максимум 3).<br/>
-                            Оновіть підписку, щоб розблокувати доступ до історії та нових сесій.
+                            Оновіть підписку, щоб розблокувати доступ.
                         </p>
-                        <button className="new-session-btn" onClick={() => setIsPaywallOpen(true)}>
-                            Розблокувати з PRO ✨
-                        </button>
+                        <button className="new-session-btn" onClick={() => setIsPaywallOpen(true)}>Розблокувати ✨</button>
                     </div>
                 )}
 
-                <div className="left-panel" style={{ opacity: isCurrentClientLocked ? 0.3 : 1, pointerEvents: isCurrentClientLocked ? 'none' : 'auto', transition: '0.3s' }}>
+                {/* ЛІВА ПАНЕЛЬ З КНОПКОЮ ЗАКРИТТЯ */}
+                <div
+                    className={`left-panel ${isMobilePanelOpen ? 'open' : 'closed'}`}
+                    style={{ opacity: isCurrentClientLocked ? 0.3 : 1, pointerEvents: isCurrentClientLocked ? 'none' : 'auto', transition: '0.3s' }}
+                >
+                    {/* КНОПКА ЗАКРИТТЯ (Видно лише на мобільних) */}
+                    <button className="mobile-panel-toggle close-toggle" onClick={() => setIsMobilePanelOpen(false)}>
+                        ❮
+                    </button>
+
                     <div>
                         <div className="section-label">Запис сесії</div>
                         <div className="recorder-card">
@@ -395,7 +346,7 @@ export default function SessionWorkspace() {
                             </div>
                             <div className="field">
                                 <label>Нотатки лікаря (необов'язково)</label>
-                                <textarea rows="3" value={doctorNotes} onChange={(e) => setDoctorNotes(e.target.value)} placeholder="Ключові теми, що не потрапили в запис..." />
+                                <textarea rows="3" value={doctorNotes} onChange={(e) => setDoctorNotes(e.target.value)} placeholder="Ключові теми..." />
                             </div>
                         </div>
                     </div>
@@ -405,7 +356,16 @@ export default function SessionWorkspace() {
                     </button>
                 </div>
 
+                {/* ПРАВА ПАНЕЛЬ З КНОПКОЮ ВІДКРИТТЯ */}
                 <div className="right-panel" style={{ opacity: isCurrentClientLocked ? 0.3 : 1, pointerEvents: isCurrentClientLocked ? 'none' : 'auto', transition: '0.3s' }}>
+
+                    {/* КНОПКА ВІДКРИТТЯ (З'являється, коли ліва панель схована) */}
+                    {!isMobilePanelOpen && (
+                        <button className="mobile-panel-toggle open-toggle" onClick={() => setIsMobilePanelOpen(true)}>
+                            ❯
+                        </button>
+                    )}
+
                     <div className="tabs">
                         <button className={`tab ${activeTab === 'transcript' ? 'active' : ''}`} onClick={() => setActiveTab('transcript')}>ТРАНСКРИПЦІЯ</button>
                         <button className={`tab ${activeTab === 'soap' ? 'active' : ''}`} onClick={() => setActiveTab('soap')}>SOAP-НОТАТКИ</button>
@@ -422,13 +382,11 @@ export default function SessionWorkspace() {
                                 <div className="empty-state">
                                     <div className="empty-icon">🎙</div>
                                     <div className="empty-text">Поки що порожньо</div>
-                                    <div className="empty-sub">Оберіть клієнта та почніть запис або введіть текст вручну нижче</div>
                                 </div>
                             )}
-
                             <div className="field" style={{marginTop: 'auto', paddingTop: '20px'}}>
-                                <label>Вручну (якщо є готовий текст)</label>
-                                <textarea rows="4" value={manualTranscript} onChange={(e) => setManualTranscript(e.target.value)} placeholder="Вставте текст розмови тут..." />
+                                <label>Вручну</label>
+                                <textarea rows="4" value={manualTranscript} onChange={(e) => setManualTranscript(e.target.value)} placeholder="Вставте текст сюди..." />
                             </div>
                             {(transcript || manualTranscript) && (
                                 <button className="copy-btn" onClick={handleCopyTranscript} style={{marginTop: '10px'}}>{copyTransStatus}</button>
@@ -441,17 +399,15 @@ export default function SessionWorkspace() {
                             {isLoadingSoap && (
                                 <div className="loading-bar visible" style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
                                     <div className="spinner"></div>
-                                    Аналізуємо сесію з урахуванням ваших налаштувань...
+                                    Аналізуємо...
                                 </div>
                             )}
-
                             {!isLoadingSoap && !soapData && (
                                 <div className="empty-state">
                                     <div className="empty-icon">📋</div>
                                     <div className="empty-text">Очікування даних</div>
                                 </div>
                             )}
-
                             {soapData && (
                                 <>
                                     <div className="soap-grid">
@@ -477,36 +433,15 @@ export default function SessionWorkspace() {
                 </div>
             </main>
 
-            {/* --- МОДАЛКА PAYWALL --- */}
+            {/* PAYWALL МОДАЛКА */}
             {isPaywallOpen && (
                 <div className="modal-overlay">
-                    <div className="modal-content" style={{ textAlign: 'center', padding: '40px 30px' }}>
-                        <div style={{ fontSize: '48px', marginBottom: '10px' }}>🚀</div>
-                        <h3 style={{ fontFamily: 'Playfair Display', fontSize: '28px', color: '#c8a96e', marginBottom: '15px' }}>
-                            Перейдіть на PRO
-                        </h3>
-                        <p style={{ color: '#8a8d91', fontSize: '15px', marginBottom: '25px', lineHeight: '1.6' }}>
-                            Ви досягли лімітів безкоштовного тарифу. <br/>
-                            Відкрийте безлімітну генерацію AI-нотаток та розблокуйте всіх клієнтів.
-                        </p>
-
-                        <div style={{ background: '#18191c', padding: '20px', borderRadius: '12px', marginBottom: '30px', border: '1px solid #333' }}>
-                            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#fff', marginBottom: '10px' }}>
-                                $29.99 <span style={{ fontSize: '14px', color: '#8a8d91', fontWeight: 'normal' }}>/ місяць</span>
-                            </div>
-                            <ul style={{ listStyle: 'none', padding: 0, margin: 0, textAlign: 'left', color: '#e8e6e0', fontSize: '14px' }}>
-                                <li style={{ marginBottom: '8px' }}>✓ Необмежена кількість клієнтів</li>
-                                <li style={{ marginBottom: '8px' }}>✓ Необмежена генерація SOAP-нотаток</li>
-                                <li style={{ marginBottom: '8px' }}>✓ Кастомні налаштування ШІ</li>
-                                <li style={{ color: '#c8a96e' }}>🎁 14 днів безкоштовно</li>
-                            </ul>
-                        </div>
-
-                        <div className="modal-actions" style={{ justifyContent: 'center', gap: '15px' }}>
+                    <div className="modal-content" style={{ textAlign: 'center' }}>
+                        <h3>Перейдіть на PRO</h3>
+                        <p>Ви досягли лімітів безкоштовного тарифу.</p>
+                        <div className="modal-actions" style={{ justifyContent: 'center' }}>
                             <button type="button" className="db-logout-btn" onClick={() => setIsPaywallOpen(false)}>Пізніше</button>
-                            <button type="button" className="new-session-btn" onClick={handleSubscribe}>
-                                Почати безкоштовний період
-                            </button>
+                            <button type="button" className="new-session-btn" onClick={handleSubscribe}>Почати PRO</button>
                         </div>
                     </div>
                 </div>

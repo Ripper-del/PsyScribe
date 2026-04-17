@@ -1643,4 +1643,80 @@ header {
   /* Жорстко обмежуємо ширину карток статистики, щоб не вилазили за край */
   .db-stats-grid { grid-template-columns: 1fr !important; gap: 15px !important; width: 100% !important; box-sizing: border-box !important; }
   .db-stat-card { padding: 20px !important; width: 100% !important; box-sizing: border-box !important; margin: 0 !important; }
+  /* =========================================
+     📱 РОБОЧИЙ ПРОСТІР (SessionWorkspace)
+     ========================================= */
+  .workspace-layout main {
+    display: flex !important;
+    position: relative !important;
+    overflow: hidden !important; /* Щоб панель не вилазила за екран */
+  }
+
+  /* Ліва панель стає абсолютною і накладається зверху */
+  .left-panel {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 50 !important;
+    background: #16181c !important; /* Колір фону панелі */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Плавний виїзд */
+  }
+
+  /* Клас, що ховає ліву панель */
+  .left-panel.closed {
+    transform: translateX(-100%) !important;
+  }
+
+  .right-panel {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* --- ДИЗАЙН КНОПОК-СТРІЛОЧОК --- */
+  .mobile-panel-toggle {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 30px !important;
+    height: 60px !important;
+    background: #0e0f11 !important; /* Чорний фон */
+    color: #fff !important; /* Біла стрілочка */
+    font-size: 16px !important;
+    z-index: 60 !important;
+    cursor: pointer !important;
+    border: 1px solid #333 !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+  }
+
+  /* Кнопка ❮ (притиснута до правого краю лівої панелі) */
+  .close-toggle {
+    right: 0 !important;
+    border-right: none !important;
+    border-radius: 30px 0 0 30px !important; /* Напівколо вліво */
+  }
+
+  /* Кнопка ❯ (притиснута до лівого краю правої панелі) */
+  .open-toggle {
+    left: 0 !important;
+    border-left: none !important;
+    border-radius: 0 30px 30px 0 !important; /* Напівколо вправо */
+  }
+
+  /* Трохи поправимо шапку сесії, щоб селектор клієнта вмістився */
+  .workspace-layout header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 15px !important;
+    padding: 15px 20px !important;
+    height: auto !important;
+  }
+  .header-selector {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
 }

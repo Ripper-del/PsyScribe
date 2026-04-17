@@ -1592,6 +1592,7 @@ header {
   /* Шапка прибита до верху екрана (НАДІЙНО) */
   .mobile-header {
     display: flex !important;
+    flex-direction: row !important;
     justify-content: space-between !important;
     align-items: center !important;
     padding: 15px 20px !important;

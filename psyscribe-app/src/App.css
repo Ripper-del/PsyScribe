@@ -1538,10 +1538,6 @@ header {
   color: #8a8d91;
   font-size: 14px;
 }
-/* =========================================
-   📱 МОБІЛЬНА АДАПТАЦІЯ (Телефони та Планшети)
-   ========================================= */
-
 
 /* =========================================
    📱 ФІНАЛЬНА МОБІЛЬНА АДАПТАЦІЯ (ЛЕНДІНГ ТА ДАШБОРД)
@@ -1591,9 +1587,7 @@ header {
   #pricing div[style*="fontSize: '56px'"], #pricing div[style*="font-size: 56px"] { font-size: 42px !important; }
 
   /* --- ДАШБОРД --- */
-  .dashboard-layout { display: flex !important; flex-direction: column !important; }
-
-  /* Змушуємо мобільну шапку з'явитися */
+  /* Змушуємо мобільну шапку завжди висіти зверху */
   .mobile-header {
     display: flex !important;
     justify-content: space-between !important;
@@ -1601,9 +1595,18 @@ header {
     padding: 15px 20px !important;
     background: #151619 !important;
     border-bottom: 1px solid #25262b !important;
-    position: sticky !important;
+    position: fixed !important; /* Змінили sticky на fixed */
     top: 0 !important;
+    left: 0 !important; /* Додали жорстку прив'язку до лівого краю */
     z-index: 100 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Відсуваємо контент вниз, щоб він не ховався під фіксованою шапкою */
+  .db-content-wrapper {
+    margin-left: 0 !important;
+    margin-top: 70px !important; /* Додали 70px відступу зверху (висота шапки) */
     width: 100% !important;
     box-sizing: border-box !important;
   }

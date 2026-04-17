@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast";
+import False from "vite/misc/false.js";
 
 export default function SessionWorkspace() {
     const navigate = useNavigate();
@@ -97,7 +98,9 @@ export default function SessionWorkspace() {
 
             recognition.continuous = true;
             // 🔥 РЯТІВНИЙ РЯДОК: Вимикаємо interimResults на телефонах, щоб уникнути багу Android Chrome!
-            recognition.interimResults = !isMobile;
+            if(isMobile){
+                recognition.interimResults = False;
+            }
             recognition.lang = 'uk-UA';
 
             recognition.onresult = (event) => {

@@ -34,6 +34,9 @@ export default function SessionWorkspace() {
     const recognitionRef = useRef(null);
     const isRecordingRef = useRef(false);
 
+    const fullTranscriptRef = useRef(''); // Зберігає весь затверджений текст
+    const currentSessionFinalRef = useRef(''); // Зберігає текст поточної фрази
+
     useEffect(() => {
         const fetchInitialData = async () => {
             const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -98,15 +101,26 @@ export default function SessionWorkspace() {
             recognition.onresult = (event) => {
                 let finalStr = '';
                 let interimStr = '';
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    if (event.results[i].isFinal) finalStr += event.results[i][0].transcript + ' ';
-                    else interimStr += event.results[i][0].transcript;
+
+                // ПРОХОДИМО ПО ВСЬОМУ МАСИВУ з 0 (а не з event.resultIndex)
+                for (let i = 0; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalStr += event.results[i][0].transcript + ' ';
+                    } else {
+                        interimStr += event.results[i][0].transcript;
+                    }
                 }
-                if (finalStr) setTranscript(prev => prev + finalStr);
+
+                // Зберігаємо фінальну частину поточної фрази в реф
+                currentSessionFinalRef.current = finalStr;
+
+                // Відображаємо: весь старий текст + поточна фінальна фраза
+                setTranscript((fullTranscriptRef.current + ' ' + finalStr).trim());
                 setInterimTranscript(interimStr);
             };
 
             recognition.onerror = (event) => {
+                // ... (твій код обробки помилок залишається без змін)
                 console.error("Помилка мікрофона:", event.error);
                 if (event.error === 'not-allowed') {
                     toast.error("Доступ до мікрофона заблоковано!");
@@ -121,6 +135,11 @@ export default function SessionWorkspace() {
         if (recognitionRef.current) {
             recognitionRef.current.onend = () => {
                 if (isRecordingRef.current) {
+                    // КОЛИ МІКРОФОН РОБИТЬ ПАУЗУ:
+                    // Назавжди зберігаємо останню фразу в загальний текст і очищаємо буфер
+                    fullTranscriptRef.current = (fullTranscriptRef.current + ' ' + currentSessionFinalRef.current).trim();
+                    currentSessionFinalRef.current = '';
+
                     try { recognitionRef.current.start(); } catch(e) {}
                 }
             };
@@ -137,10 +156,15 @@ export default function SessionWorkspace() {
             isRecordingRef.current = false;
             recognitionRef.current.stop();
             setIsRecording(false);
-        } else {
+        }  else {
             setTranscript('');
             setInterimTranscript('');
             setSeconds(0);
+
+            // ДОДАТИ ЦІ ДВА РЯДКИ:
+            fullTranscriptRef.current = '';
+            currentSessionFinalRef.current = '';
+
             isRecordingRef.current = true;
             try {
                 recognitionRef.current.start();

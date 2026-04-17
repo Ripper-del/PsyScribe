@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="fixed button on landingpage 2.0">
+    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="fixed sidebar 2.0">
       <change afterPath="$PROJECT_DIR$/psyscribe-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/psyscribe-app/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/psyscribe-app/src/pages/SessionWorkspace.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/src/pages/SessionWorkspace.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,23 +96,7 @@
       <workItem from="1775585873723" duration="25000" />
       <workItem from="1776284336510" duration="2773000" />
       <workItem from="1776346433804" duration="5708000" />
-      <workItem from="1776430818151" duration="9125000" />
-    </task>
-    <task id="LOCAL-00007" summary="commit (done the whole idea)">
-      <option name="closed" value="true" />
-      <created>1774472284920</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1774472284920</updated>
-    </task>
-    <task id="LOCAL-00008" summary="commit (done the whole idea)">
-      <option name="closed" value="true" />
-      <created>1774472786543</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1774472786543</updated>
+      <workItem from="1776430818151" duration="9766000" />
     </task>
     <task id="LOCAL-00009" summary="commit (done the whole idea)">
       <option name="closed" value="true" />
@@ -490,15 +474,29 @@
       <option name="project" value="LOCAL" />
       <updated>1776439543988</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="fixed sidebar">
+      <option name="closed" value="true" />
+      <created>1776440022215</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1776440022215</updated>
+    </task>
+    <task id="LOCAL-00057" summary="fixed sidebar 2.0">
+      <option name="closed" value="true" />
+      <created>1776440100555</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1776440100555</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added my own email for &quot;support&quot;" />
-    <MESSAGE value="added privacy policy (hopefully it works)" />
     <MESSAGE value="trying something different for phones view" />
     <MESSAGE value="trying something different for phones' view" />
     <MESSAGE value="trying something different for phones' view 2.0" />
@@ -522,6 +520,8 @@
     <MESSAGE value="aligned psyscribe text 4.0 (surely correctly this time)" />
     <MESSAGE value="fixed button on landingpage" />
     <MESSAGE value="fixed button on landingpage 2.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed button on landingpage 2.0" />
+    <MESSAGE value="fixed sidebar" />
+    <MESSAGE value="fixed sidebar 2.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed sidebar 2.0" />
   </component>
 </project>

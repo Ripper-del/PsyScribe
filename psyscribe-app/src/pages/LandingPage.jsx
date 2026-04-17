@@ -38,11 +38,11 @@ export default function LandingPage() {
                     AI-асистент для психотерапевтів, який автоматично перетворює розмову на структуровані клінічні SOAP-нотатки за лічені секунди.
                 </p>
 
-                <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
-                    <Link to="/login" className="new-session-btn" style={{ padding: '16px 36px', fontSize: '18px', borderRadius: '12px', boxShadow: '0 8px 25px rgba(200, 169, 110, 0.25)' }}>
+                <div className="hero-actions-wrapper" style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
+                    <Link to="/login" className="new-session-btn hero-cta-btn" style={{ padding: '16px 36px', fontSize: '18px', borderRadius: '12px', boxShadow: '0 8px 25px rgba(200, 169, 110, 0.25)' }}>
                         Почати роботу
                     </Link>
-                    <a href="#pricing" className="db-logout-btn" style={{ padding: '16px 36px', fontSize: '18px', borderRadius: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <a href="#pricing" className="db-logout-btn hero-cta-btn" style={{ padding: '16px 36px', fontSize: '18px', borderRadius: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)' }}>
                         Дивитись тарифи
                     </a>
                 </div>

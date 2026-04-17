@@ -1773,4 +1773,21 @@ header {
     justify-content: center !important;
     box-sizing: border-box !important;
   }
+  .hero-actions-wrapper {
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 0 20px !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-cta-btn {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 16px !important;
+    font-size: 16px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
 }

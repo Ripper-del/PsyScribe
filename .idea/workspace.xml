@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="aligned psyscribe text 2.0 (correctly this time)">
+    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="fixed button on landingpage 2.0">
       <change afterPath="$PROJECT_DIR$/psyscribe-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/.env" afterDir="false" />
@@ -96,39 +96,7 @@
       <workItem from="1775585873723" duration="25000" />
       <workItem from="1776284336510" duration="2773000" />
       <workItem from="1776346433804" duration="5708000" />
-      <workItem from="1776430818151" duration="7927000" />
-    </task>
-    <task id="LOCAL-00003" summary="commit (done the whole idea)">
-      <option name="closed" value="true" />
-      <created>1774467216380</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1774467216380</updated>
-    </task>
-    <task id="LOCAL-00004" summary="commit (done the whole idea)">
-      <option name="closed" value="true" />
-      <created>1774467873344</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1774467873344</updated>
-    </task>
-    <task id="LOCAL-00005" summary="commit (done the whole idea)">
-      <option name="closed" value="true" />
-      <created>1774468528024</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1774468528024</updated>
-    </task>
-    <task id="LOCAL-00006" summary="commit (done the whole idea)">
-      <option name="closed" value="true" />
-      <created>1774469031500</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1774469031500</updated>
+      <workItem from="1776430818151" duration="9125000" />
     </task>
     <task id="LOCAL-00007" summary="commit (done the whole idea)">
       <option name="closed" value="true" />
@@ -490,17 +458,45 @@
       <option name="project" value="LOCAL" />
       <updated>1776438655326</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="aligned psyscribe text 3.0 (surely correctly this time)">
+      <option name="closed" value="true" />
+      <created>1776438821617</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1776438821617</updated>
+    </task>
+    <task id="LOCAL-00053" summary="aligned psyscribe text 4.0 (surely correctly this time)">
+      <option name="closed" value="true" />
+      <created>1776438907439</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1776438907439</updated>
+    </task>
+    <task id="LOCAL-00054" summary="fixed button on landingpage">
+      <option name="closed" value="true" />
+      <created>1776439233649</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1776439233649</updated>
+    </task>
+    <task id="LOCAL-00055" summary="fixed button on landingpage 2.0">
+      <option name="closed" value="true" />
+      <created>1776439543988</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1776439543988</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changed model to gemini 3.1 flash lite preview" />
-    <MESSAGE value="trying to fix the payment" />
-    <MESSAGE value="fixing RLS" />
-    <MESSAGE value="fixing speech recognition" />
     <MESSAGE value="added my own email for &quot;support&quot;" />
     <MESSAGE value="added privacy policy (hopefully it works)" />
     <MESSAGE value="trying something different for phones view" />
@@ -522,6 +518,10 @@
     <MESSAGE value="aligned psyscribe text" />
     <MESSAGE value="aligned psyscribe text 2.0" />
     <MESSAGE value="aligned psyscribe text 2.0 (correctly this time)" />
-    <option name="LAST_COMMIT_MESSAGE" value="aligned psyscribe text 2.0 (correctly this time)" />
+    <MESSAGE value="aligned psyscribe text 3.0 (surely correctly this time)" />
+    <MESSAGE value="aligned psyscribe text 4.0 (surely correctly this time)" />
+    <MESSAGE value="fixed button on landingpage" />
+    <MESSAGE value="fixed button on landingpage 2.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed button on landingpage 2.0" />
   </component>
 </project>

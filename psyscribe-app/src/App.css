@@ -1791,3 +1791,14 @@ header {
     justify-content: center !important;
   }
 }
+.close-sidebar-btn {
+  display: none;
+}
+
+.mobile-header {
+  display: none;
+}
+
+.sidebar-overlay {
+  display: none;
+}

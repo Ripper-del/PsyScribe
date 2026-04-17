@@ -1593,16 +1593,16 @@ header {
   .mobile-header {
     display: flex !important;
     justify-content: space-between !important;
-    align-items: center !important;
-    padding: 15px 20px !important;
+    align-items: center !important; /* Це вирівнює елементи по вертикальному центру */
+    padding: 0 20px !important; /* ПРИБРАЛИ вертикальний паддінг (15px), щоб не було конфлікту з height */
     background: #151619 !important;
     border-bottom: 1px solid #25262b !important;
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     z-index: 100 !important;
-    width: 100vw !important; /* На всю ширину екрана */
-    height: 70px !important; /* Жорстко фіксуємо висоту шапки */
+    width: 100vw !important;
+    height: 70px !important; /* Шапка має рівно 70px висоти */
     box-sizing: border-box !important;
   }
 

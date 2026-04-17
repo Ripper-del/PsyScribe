@@ -1752,4 +1752,25 @@ header {
     width: 100% !important;
     justify-content: space-between !important;
   }
+  .hero-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .hero-actions .btn,
+  .hero-actions a {
+    flex: 1 !important;
+    height: auto !important;
+    min-height: 52px !important;
+    padding: 14px 16px !important;
+    white-space: normal !important;
+    text-align: center !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
 }

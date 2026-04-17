@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import 'regenerator-runtime/runtime'; // Обов'язковий імпорт для бібліотеки мікрофона
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast";
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 export default function SessionWorkspace() {
     const navigate = useNavigate();
 
-    const [isRecording, setIsRecording] = useState(false);
     const [seconds, setSeconds] = useState(0);
     const [activeTab, setActiveTab] = useState('transcript');
 
@@ -15,8 +16,6 @@ export default function SessionWorkspace() {
     const [customPrompt, setCustomPrompt] = useState('');
     const [planType, setPlanType] = useState('free');
 
-    const [transcript, setTranscript] = useState('');
-    const [interimTranscript, setInterimTranscript] = useState('');
     const [soapData, setSoapData] = useState(null);
     const [isLoadingSoap, setIsLoadingSoap] = useState(false);
 
@@ -28,15 +27,17 @@ export default function SessionWorkspace() {
     const [copySoapStatus, setCopySoapStatus] = useState('КОПІЮВАТИ ВСЕ');
     const [isPaywallOpen, setIsPaywallOpen] = useState(false);
 
-    // НОВЕ: Стан для мобільної панелі (за замовчуванням відкрита)
     const [isMobilePanelOpen, setIsMobilePanelOpen] = useState(true);
 
-    const recognitionRef = useRef(null);
-    const isRecordingRef = useRef(false);
-
-    const savedTranscriptRef = useRef(''); // Історія (збережений текст з попередніх пауз)
-    const currentSessionFinalRef = useRef(''); // Поточний буфер (те, що телефон розпізнає зараз)
-    const fullTranscriptRef = useRef(''); // Зберігає весь затверджений текст
+    // ==========================================
+    // МАГІЯ REACT-SPEECH-RECOGNITION
+    // ==========================================
+    const {
+        transcript,           // Готовий текст (бібліотека сама прибирає дублікати!)
+        listening,            // Чи йде запис прямо зараз (замінює наш isRecording)
+        resetTranscript,      // Функція для очищення тексту
+        browserSupportsSpeechRecognition
+    } = useSpeechRecognition();
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -76,111 +77,41 @@ export default function SessionWorkspace() {
         return index >= 3;
     };
 
+    // Таймер запису
     useEffect(() => {
         let interval = null;
-        if (isRecording) {
+        if (listening) {
             interval = setInterval(() => setSeconds(s => s + 1), 1000);
         } else {
             clearInterval(interval);
         }
         return () => clearInterval(interval);
-    }, [isRecording]);
-
-    useEffect(() => {
-        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-            console.warn("Браузер не підтримує SpeechRecognition");
-            return;
-        }
-
-        if (!recognitionRef.current) {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            recognition.lang = 'uk-UA';
-
-            // 1. ОБРОБКА РЕЗУЛЬТАТІВ
-            recognition.onresult = (event) => {
-                let finalStr = '';
-                let interimStr = '';
-
-                // ЗАВЖДИ йдемо з 0, бо телефон постійно очищає масив event.results
-                for (let i = 0; i < event.results.length; ++i) {
-                    if (event.results[i].isFinal) {
-                        finalStr += event.results[i][0].transcript + ' ';
-                    } else {
-                        interimStr += event.results[i][0].transcript;
-                    }
-                }
-
-                // ПЕРЕЗАПИСУЄМО поточний буфер (ніколи не робимо += тут!)
-                currentSessionFinalRef.current = finalStr;
-
-                // Відображаємо на екрані: Історія + Поточний буфер
-                setTranscript((savedTranscriptRef.current + ' ' + currentSessionFinalRef.current).trim());
-                setInterimTranscript(interimStr);
-            };
-
-            // 2. ОБРОБКА ПОМИЛОК
-            recognition.onerror = (event) => {
-                console.error("Помилка мікрофона:", event.error);
-                if (event.error === 'not-allowed') {
-                    toast.error("Доступ до мікрофона заблоковано!");
-                    setIsRecording(false);
-                    isRecordingRef.current = false;
-                }
-            };
-
-            recognitionRef.current = recognition;
-        }
-
-        // 3. ОБРОБКА ПАУЗ (Коли мікрофон на секунду вимикається)
-        if (recognitionRef.current) {
-            recognitionRef.current.onend = () => {
-                if (isRecordingRef.current) {
-                    // Коли сталася пауза, переносимо поточний буфер в Історію
-                    savedTranscriptRef.current = (savedTranscriptRef.current + ' ' + currentSessionFinalRef.current).trim();
-                    currentSessionFinalRef.current = ''; // Очищаємо буфер для нових слів
-
-                    // Знову запускаємо мікрофон
-                    try { recognitionRef.current.start(); } catch(e) {}
-                }
-            };
-        }
-    }, []);
+    }, [listening]);
 
     const toggleRecording = () => {
         if (!selectedClientId) return toast.error("Будь ласка, оберіть клієнта!");
-        if (!recognitionRef.current) {
+
+        if (!browserSupportsSpeechRecognition) {
             return toast.error("Ваш браузер не підтримує запис голосу. Використовуйте Google Chrome.");
         }
 
-        if (isRecording) {
-            isRecordingRef.current = false;
-            recognitionRef.current.stop();
-            setIsRecording(false);
-        }  else {
-            setTranscript('');
-            setInterimTranscript('');
+        if (listening) {
+            SpeechRecognition.stopListening();
+        } else {
+            // Очищаємо текст і таймер перед новою сесією
+            if (transcript) resetTranscript();
             setSeconds(0);
 
-            // ОЧИЩАЄМО ПАМ'ЯТЬ ПЕРЕД НОВИМ ЗАПИСОМ
-            savedTranscriptRef.current = '';
-            currentSessionFinalRef.current = '';
-
-            isRecordingRef.current = true;
-            try {
-                recognitionRef.current.start();
-                setIsRecording(true);
-            } catch(e) {
-                isRecordingRef.current = false;
-                toast.error("Помилка старту мікрофона.");
-            }
+            // Вмикаємо безперервний запис українською
+            SpeechRecognition.startListening({
+                continuous: true,
+                language: 'uk-UA'
+            });
         }
     };
 
     const generateSOAP = async () => {
-        const finalTranscript = `${transcript} ${interimTranscript} \n\n ${manualTranscript}`.trim();
+        const finalTranscript = `${transcript} \n\n ${manualTranscript}`.trim();
         if (!finalTranscript) return toast.error('Текст розмови порожній!');
         if (!selectedClientId) return toast.error('Оберіть клієнта!');
 
@@ -198,7 +129,6 @@ export default function SessionWorkspace() {
 
         setActiveTab('soap');
         setIsLoadingSoap(true);
-        // При генерації на мобільних автоматично ховаємо ліву панель, щоб бачити результат
         setIsMobilePanelOpen(false);
 
         try {
@@ -243,7 +173,7 @@ export default function SessionWorkspace() {
     };
 
     const handleCopyTranscript = () => {
-        const fullText = (transcript + ' ' + interimTranscript + ' ' + manualTranscript).trim();
+        const fullText = (transcript + ' ' + manualTranscript).trim();
         navigator.clipboard.writeText(fullText);
         setCopyTransStatus('Скопійовано! ✓');
         setTimeout(() => setCopyTransStatus('КОПІЮВАТИ ТЕКСТ'), 2000);
@@ -298,8 +228,7 @@ export default function SessionWorkspace() {
                         value={selectedClientId}
                         onChange={(e) => {
                             setSelectedClientId(e.target.value);
-                            setIsRecording(false);
-                            if(recognitionRef.current) recognitionRef.current.stop();
+                            if(listening) SpeechRecognition.stopListening();
                         }}
                         className="client-dropdown"
                     >
@@ -338,7 +267,6 @@ export default function SessionWorkspace() {
                     className={`left-panel ${isMobilePanelOpen ? 'open' : 'closed'}`}
                     style={{ opacity: isCurrentClientLocked ? 0.3 : 1, pointerEvents: isCurrentClientLocked ? 'none' : 'auto', transition: '0.3s' }}
                 >
-                    {/* КНОПКА ЗАКРИТТЯ (Видно лише на мобільних) */}
                     <button className="mobile-panel-toggle close-toggle" onClick={() => setIsMobilePanelOpen(false)}>
                         ❮
                     </button>
@@ -347,14 +275,14 @@ export default function SessionWorkspace() {
                         <div className="section-label">Запис сесії</div>
                         <div className="recorder-card">
                             <div className="timer">{formatTime(seconds)}</div>
-                            <div className={`waveform ${isRecording ? 'active' : ''}`}>
+                            <div className={`waveform ${listening ? 'active' : ''}`}>
                                 {[...Array(5)].map((_, i) => <div key={i} className="wave-bar" style={{animationDelay: `${i * 0.1}s`}}></div>)}
                             </div>
-                            <button className={`rec-btn ${isRecording ? 'active' : ''}`} onClick={toggleRecording}>
+                            <button className={`rec-btn ${listening ? 'active' : ''}`} onClick={toggleRecording}>
                                 <div className="rec-icon"></div>
                             </button>
-                            <div className={`rec-status ${isRecording ? 'active' : ''}`}>
-                                {isRecording ? 'Запис триває...' : 'Натисніть, щоб почати запис'}
+                            <div className={`rec-status ${listening ? 'active' : ''}`}>
+                                {listening ? 'Запис триває...' : 'Натисніть, щоб почати запис'}
                             </div>
                         </div>
                     </div>
@@ -385,8 +313,6 @@ export default function SessionWorkspace() {
 
                 {/* ПРАВА ПАНЕЛЬ З КНОПКОЮ ВІДКРИТТЯ */}
                 <div className="right-panel" style={{ opacity: isCurrentClientLocked ? 0.3 : 1, pointerEvents: isCurrentClientLocked ? 'none' : 'auto', transition: '0.3s' }}>
-
-                    {/* КНОПКА ВІДКРИТТЯ (З'являється, коли ліва панель схована) */}
                     {!isMobilePanelOpen && (
                         <button className="mobile-panel-toggle open-toggle" onClick={() => setIsMobilePanelOpen(true)}>
                             ❯
@@ -400,10 +326,9 @@ export default function SessionWorkspace() {
 
                     {activeTab === 'transcript' && (
                         <div className="tab-content active">
-                            {transcript || interimTranscript ? (
+                            {transcript ? (
                                 <div className="transcript-box">
                                     <span>{transcript}</span>
-                                    <span style={{color: '#c8a96e'}}>{interimTranscript}</span>
                                 </div>
                             ) : (
                                 <div className="empty-state">

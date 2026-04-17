@@ -1851,20 +1851,27 @@ header {
   }
 
   /* Хедер */
-  .landing-header {
+  header {
     padding: 15px 20px !important;
   }
-  .header-nav {
-    display: none !important; /* Ховаємо текстові посилання */
-  }
-  .landing-header .btn {
-    padding: 8px 16px !important;
-    font-size: 14px !important;
-  }
-  .logo {
-    font-size: 20px !important;
+
+  /* Ховаємо посилання "Тарифи" та "Увійти", які є тегами <a> всередині <nav>, АЛЕ залишаємо кнопку */
+  header nav a:not(.new-session-btn) {
+    display: none !important;
   }
 
+  /* Зменшуємо саму кнопку "Спробувати безкоштовно" */
+  header .new-session-btn {
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+    white-space: normal !important;
+    text-align: center;
+  }
+
+  /* Зменшуємо текст логотипу (PsyScribe) */
+  header span {
+    font-size: 20px !important;
+  }
   /* Складаємо сітки в одну колонку */
   .hero-section,
   .problem-grid,

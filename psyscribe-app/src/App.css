@@ -1607,6 +1607,7 @@ header {
     box-sizing: border-box !important;
   }
   .mobile-header .db-logo {
+    margin-bottom: 0 !important;
     margin-top: 0 !important;
     align-self: center !important;
     line-height: 1 !important;

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast";
-import False from "vite/misc/false.js";
 
 export default function SessionWorkspace() {
     const navigate = useNavigate();
@@ -33,9 +32,11 @@ export default function SessionWorkspace() {
     const recognitionRef = useRef(null);
     const isRecordingRef = useRef(false);
 
-    // НАША "БРОНЕБІЙНА" ПАМ'ЯТЬ:
-    const historyRef = useRef(''); // Зберігає текст після пауз мікрофона
-    const currentSessionRef = useRef(''); // Зберігає те, що ти кажеш прямо зараз
+    const historyRef = useRef('');
+    const currentSessionRef = useRef('');
+
+    // 🔥 ВИЗНАЧАЄМО ANDROID
+    const isAndroid = /Android/i.test(navigator.userAgent);
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -85,6 +86,9 @@ export default function SessionWorkspace() {
     }, [isRecording]);
 
     useEffect(() => {
+        // Якщо це Android, навіть не намагаємося ініціалізувати мікрофон
+        if (isAndroid) return;
+
         if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
             return;
         }
@@ -92,32 +96,28 @@ export default function SessionWorkspace() {
         if (!recognitionRef.current) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognition();
-
-            // Тепер можна безпечно залишити ці налаштування для всіх пристроїв
             recognition.continuous = true;
             recognition.interimResults = true;
             recognition.lang = 'uk-UA';
 
             recognition.onresult = (event) => {
-                let currentSessionFinal = '';
-                let currentSessionInterim = '';
+                let currentFinal = '';
+                let currentInterim = '';
 
-                // 🔥 ГОЛОВНИЙ ФІКС: Завжди йдемо з 0!
-                // Ми заново перезбируємо все, що телефон почув у поточній сесії.
-                for (let i = 0; i < event.results.length; i++) {
+                for (let i = event.resultIndex; i < event.results.length; i++) {
                     if (event.results[i].isFinal) {
-                        currentSessionFinal += event.results[i][0].transcript + ' ';
+                        currentFinal += event.results[i][0].transcript + ' ';
                     } else {
-                        currentSessionInterim += event.results[i][0].transcript + ' ';
+                        currentInterim += event.results[i][0].transcript + ' ';
                     }
                 }
 
-                // ПРОСТО ПЕРЕЗАПИСУЄМО буфер поточної сесії (ніяких +=)
-                currentSessionRef.current = currentSessionFinal;
+                if (currentFinal.trim() !== '') {
+                    historyRef.current = (historyRef.current + ' ' + currentFinal).trim() + ' ';
+                }
 
-                // На екрані малюємо: [Те, що зберегли з минулих пауз] + [Те, що говоримо зараз]
-                setTranscript((historyRef.current + ' ' + currentSessionFinal).trim());
-                setInterimTranscript(currentSessionInterim.trim());
+                setTranscript(historyRef.current);
+                setInterimTranscript(currentInterim.trim());
             };
 
             recognition.onerror = (event) => {
@@ -130,13 +130,6 @@ export default function SessionWorkspace() {
             };
 
             recognition.onend = () => {
-                // Коли мікрофон робить паузу (сесія завершилась) — тільки тоді зберігаємо в Історію
-                if (currentSessionRef.current.trim() !== '') {
-                    historyRef.current = (historyRef.current + ' ' + currentSessionRef.current).trim() + ' ';
-                    currentSessionRef.current = ''; // Очищаємо буфер для наступної фрази
-                }
-
-                // Перезапускаємо мікрофон, якщо не тиснули кнопку "Стоп"
                 if (isRecordingRef.current) {
                     try { recognitionRef.current.start(); } catch(e) {}
                 } else {
@@ -146,9 +139,13 @@ export default function SessionWorkspace() {
 
             recognitionRef.current = recognition;
         }
-    }, []);
+    }, [isAndroid]);
 
     const toggleRecording = () => {
+        if (isAndroid) {
+            return toast.error("Запис недоступний на Android пристроях.");
+        }
+
         if (!selectedClientId) return toast.error("Будь ласка, оберіть клієнта!");
 
         if (!recognitionRef.current) {
@@ -156,12 +153,10 @@ export default function SessionWorkspace() {
         }
 
         if (isRecording) {
-            // ПАУЗА: зупиняємо, але текст зберігається
             isRecordingRef.current = false;
             recognitionRef.current.stop();
             setIsRecording(false);
         } else {
-            // СТАРТ / ПРОДОВЖЕННЯ
             isRecordingRef.current = true;
             try {
                 recognitionRef.current.start();
@@ -291,14 +286,12 @@ export default function SessionWorkspace() {
                         onChange={(e) => {
                             setSelectedClientId(e.target.value);
 
-                            // 1. Зупиняємо запис
                             if(isRecording) {
                                 isRecordingRef.current = false;
                                 setIsRecording(false);
                                 if(recognitionRef.current) recognitionRef.current.stop();
                             }
 
-                            // 2. ПОВНІСТЮ ОЧИЩАЄМО ДАНІ ДЛЯ НОВОГО КЛІЄНТА
                             setTranscript('');
                             setInterimTranscript('');
                             historyRef.current = '';
@@ -347,18 +340,31 @@ export default function SessionWorkspace() {
 
                     <div>
                         <div className="section-label">Запис сесії</div>
-                        <div className="recorder-card">
-                            <div className="timer">{formatTime(seconds)}</div>
-                            <div className={`waveform ${isRecording ? 'active' : ''}`}>
-                                {[...Array(5)].map((_, i) => <div key={i} className="wave-bar" style={{animationDelay: `${i * 0.1}s`}}></div>)}
+
+                        {/* АЛЬТЕРНАТИВНА КАРТКА ДЛЯ ANDROID */}
+                        {isAndroid ? (
+                            <div className="recorder-card" style={{ textAlign: 'center', padding: '30px 20px', background: 'rgba(255, 69, 58, 0.05)', border: '1px solid rgba(255, 69, 58, 0.2)' }}>
+                                <div style={{ fontSize: '36px', marginBottom: '15px' }}>🤖 🚫</div>
+                                <h4 style={{ color: '#ff453a', marginBottom: '10px', fontSize: '16px' }}>Функція недоступна</h4>
+                                <p style={{ color: '#8a8d91', fontSize: '13px', lineHeight: '1.5' }}>
+                                    Через технічні обмеження браузера Android, живий запис голосу працює тільки на ПК. <br/><br/>
+                                    Будь ласка, вставте текст розмови у поле "Вручну" у правій панелі, або відкрийте PsyScribe на комп'ютері.
+                                </p>
                             </div>
-                            <button className={`rec-btn ${isRecording ? 'active' : ''}`} onClick={toggleRecording}>
-                                <div className="rec-icon"></div>
-                            </button>
-                            <div className={`rec-status ${isRecording ? 'active' : ''}`}>
-                                {isRecording ? 'Запис триває...' : 'Натисніть, щоб почати запис'}
+                        ) : (
+                            <div className="recorder-card">
+                                <div className="timer">{formatTime(seconds)}</div>
+                                <div className={`waveform ${isRecording ? 'active' : ''}`}>
+                                    {[...Array(5)].map((_, i) => <div key={i} className="wave-bar" style={{animationDelay: `${i * 0.1}s`}}></div>)}
+                                </div>
+                                <button className={`rec-btn ${isRecording ? 'active' : ''}`} onClick={toggleRecording}>
+                                    <div className="rec-icon"></div>
+                                </button>
+                                <div className={`rec-status ${isRecording ? 'active' : ''}`}>
+                                    {isRecording ? 'Запис триває...' : 'Натисніть, щоб почати запис'}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
 
                     <div>
@@ -413,7 +419,7 @@ export default function SessionWorkspace() {
                             )}
                             <div className="field" style={{marginTop: 'auto', paddingTop: '20px'}}>
                                 <label>Вручну</label>
-                                <textarea rows="4" value={manualTranscript} onChange={(e) => setManualTranscript(e.target.value)} placeholder="Вставте текст сюди..." />
+                                <textarea rows="4" value={manualTranscript} onChange={(e) => setManualTranscript(e.target.value)} placeholder={isAndroid ? "Вставте текст розмови сюди..." : "Вставте текст сюди..."} />
                             </div>
                             {(transcript || manualTranscript) && (
                                 <button className="copy-btn" onClick={handleCopyTranscript} style={{marginTop: '10px'}}>{copyTransStatus}</button>

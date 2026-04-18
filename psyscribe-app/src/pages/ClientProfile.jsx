@@ -68,7 +68,7 @@ export default function ClientProfile() {
             {/* MAIN CONTENT */}
             <div className="db-content-wrapper">
                 <main className="db-content">
-                    <header className="cp-hero-card">
+                    <div className="cp-hero-card">
                         <div className="cp-hero-info">
                             <button onClick={() => navigate('/dashboard')} className="text-btn back-btn">
                                 ← Назад до кабінету
@@ -86,7 +86,7 @@ export default function ClientProfile() {
                         <button className="new-session-btn" onClick={() => navigate('/session')}>
                             + Нова сесія
                         </button>
-                    </header>
+                    </div>
 
                     <div className="db-section-label">Архів зустрічей ({sessions.length})</div>
 

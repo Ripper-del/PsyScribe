@@ -1326,8 +1326,11 @@ header {
   margin-bottom: 40px;
   width: 100%;
   box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-  position: relative;
   overflow: hidden;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 /* Легке світіння на фоні картки для об'єму */
@@ -1804,7 +1807,4 @@ header {
 }
 .mobile-panel-toggle {
   display: none;
-}
-.cp-hero-card {
-  flex-shrink: 0;
 }

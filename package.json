@@ -7,9 +7,5 @@
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "private": true,
-  "dependencies": {
-    "react-speech-recognition": "^4.0.1",
-    "regenerator-runtime": "^0.14.1"
-  }
+  "private": true
 }

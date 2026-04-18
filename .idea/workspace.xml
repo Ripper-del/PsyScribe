@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="fixing hero card shrink 4.0">
+    <list default="true" id="745bf4ce-cba6-41a0-8b4d-bc820374a9b8" name="Changes" comment="fixing hero card shrink 5.0">
       <change afterPath="$PROJECT_DIR$/psyscribe-backend/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psyscribe-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/psyscribe-app/.env" afterDir="false" />
@@ -97,15 +97,7 @@
       <workItem from="1776284336510" duration="2773000" />
       <workItem from="1776346433804" duration="5708000" />
       <workItem from="1776430818151" duration="15840000" />
-      <workItem from="1776518661251" duration="3809000" />
-    </task>
-    <task id="LOCAL-00030" summary="trying something different for phones' view">
-      <option name="closed" value="true" />
-      <created>1776433115804</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1776433115804</updated>
+      <workItem from="1776518661251" duration="4238000" />
     </task>
     <task id="LOCAL-00031" summary="trying something different for phones' view">
       <option name="closed" value="true" />
@@ -491,14 +483,21 @@
       <option name="project" value="LOCAL" />
       <updated>1776521958352</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="fixing hero card shrink 5.0">
+      <option name="closed" value="true" />
+      <created>1776522805067</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1776522805067</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed button on landingpage" />
     <MESSAGE value="fixed button on landingpage 2.0" />
     <MESSAGE value="fixed sidebar" />
     <MESSAGE value="fixed sidebar 2.0" />
@@ -523,6 +522,7 @@
     <MESSAGE value="fixing hero card shrink 2.0" />
     <MESSAGE value="fixing hero card shrink 3.0" />
     <MESSAGE value="fixing hero card shrink 4.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixing hero card shrink 4.0" />
+    <MESSAGE value="fixing hero card shrink 5.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing hero card shrink 5.0" />
   </component>
 </project>

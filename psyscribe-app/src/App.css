@@ -298,6 +298,8 @@
   margin-left: 0; /* Оскільки sidebar fixed, grid автоматично відступить */
   display: flex;
   justify-content: center;
+  overflow-y: auto;  /* ← скрол тут, а не всередині */
+  height: 100vh;     /* ← фіксована висота */
 }
 
 .db-content {

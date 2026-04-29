@@ -75,7 +75,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
     try {
         const { userId, userEmail, priceId } = req.body;
 
-        const CLIENT_URL = process.env.CLIENT_URL || 'https://psyscribe-pearl.vercel.app';
+        const CLIENT_URL = process.env.CLIENT_URL || 'https://psyscribe.netlify.app';
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
